@@ -1,28 +1,24 @@
 <template>
   <div class="home">
-    <a v-show="!token" href="https://www.carenzorgt.nl/login/oauth/authorize?response_type=token&client_id=6a38d19e07d34c5ee51f349475b8c580897af536b875c591bfeb83752e12c98e&redirect_uri=http://localhost:8080/oauth&scope=user.read+calendar.read+care_givers.read">Authenitcate With Caren</a>
+    <a v-show="!token" :href="authLink">Authenitcate With Caren</a>
   </div>
 </template>
 
 <script>
+import variables from '@/variables'
 // @ is an alias to /src
 
 export default {
   name: 'home',
-  components: {
-  },
-  methods: {
-    carenLogin () {
-
+  data () {
+    return {
+      authLink: "https://www.carenzorgt.nl/login/oauth/authorize?response_type=token&client_id=" + variables.clientId + "&redirect_uri=" + variables.redirectUri + "&scope=user.read+calendar.read+care_givers.read"
     }
   },
   computed: {
     token () {
       return this.$store.state.token
     }
-  },
-  created () {
-    
   }
 }
 </script>
