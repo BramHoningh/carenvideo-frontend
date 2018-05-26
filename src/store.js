@@ -8,7 +8,7 @@ export default new Vuex.Store({
     token: '',
     currentUser: {},
     usersPeople: {},
-    pusher: null,
+    presencePusher: null,
     allUsersChannel: null
   },
   getters: {
@@ -20,8 +20,8 @@ export default new Vuex.Store({
       return state.usersPeople
     },
 
-    getPusherInstance: state => {
-      return state.pusher
+    getPresencePusherInstance: state => {
+      return state.presencePusher
     },
 
     getAllUsersChannel: state => {
@@ -41,8 +41,8 @@ export default new Vuex.Store({
       state.usersPeople = payload.people
     },
 
-    INIT_PUSHER (state, payload) {
-      state.pusher = payload.pusher
+    INIT_PRESENCE_PUSHER (state, payload) {
+      state.presencePusher = payload.pusher
     },
 
     INIT_ALL_USERS_CHANNEL (state, payload) {
@@ -64,8 +64,8 @@ export default new Vuex.Store({
       })
     },
 
-    initPusher ({commit}, payload) {
-      commit('INIT_PUSHER', payload)
+    initPresencePusher ({commit}, payload) {
+      commit('INIT_PRESENCE_PUSHER', payload)
     },
 
     initAllUsersChannel ({commit}, payload) {

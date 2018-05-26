@@ -54,20 +54,20 @@ export default {
     },
 
     initializePusher (id) {
-      let pusher = new Pusher('8dc95d49e9a8f15e0980', {
+      let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
         cluster: 'eu',
         encrypted: true,
-        authEndpoint: "http://localhost:5000/pusher/auth",
+        authEndpoint: "http://localhost:5000/pusher/auth/presence",
         auth: {
           params: { id: id }
         }
       })
 
-      this.$store.dispatch('initPusher', {
-        pusher: pusher
+      this.$store.dispatch('initPresencePusher', {
+        pusher: presencePusher
       })
 
-      let allUsersChannel = this.$store.getters.getPusherInstance.subscribe('presence-all')
+      let allUsersChannel = this.$store.getters.getPresencePusherInstance.subscribe('presence-all')
 
       this.$store.dispatch('initAllUsersChannel', {
         channel: allUsersChannel
