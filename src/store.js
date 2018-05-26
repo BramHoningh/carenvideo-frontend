@@ -1,14 +1,32 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     token: '',
-    currentUser: '',
-    usersPeople: ''
+    currentUser: {},
+    usersPeople: {},
+    pusher: null,
+    allUsersChannel: null
+  },
+  getters: {
+    getCurrentUser: state => {
+      return state.currentUser
+    },
+
+    getUsersPeople: state => {
+      return state.usersPeople
+    },
+
+    getPusherInstance: state => {
+      return state.pusher
+    },
+
+    getAllUsersChannel: state => {
+      return state.allUsersChannel
+    }
   },
   mutations: {
     ADD_TOKEN (state, payload) {
@@ -21,6 +39,14 @@ export default new Vuex.Store({
 
     ADD_USERS_PEOPLE (state, payload) {
       state.usersPeople = payload.people
+    },
+
+    INIT_PUSHER (state, payload) {
+      state.pusher = payload.pusher
+    },
+
+    INIT_ALL_USERS_CHANNEL (state, payload) {
+      state.allUsersChannel = payload.channel
     }
   },
   actions: {
@@ -28,29 +54,22 @@ export default new Vuex.Store({
       commit('ADD_TOKEN', payload)
     },
 
-    getUsers ({commit, state}) {
-      function getCurrentUser() {
-        return axios.get('https://www.carenzorgt.nl/api/v1/user', {
-          headers: { 'Authorization': 'Bearer ' + state.token }
-        })
-      }
+    addPeople ({commit}, payload) {
+      commit('ADD_CURRENT_USER', {
+        user: payload.currentUser
+      })
 
-      function getPeople() {
-        return axios.get('https://www.carenzorgt.nl/api/v1/people', {
-          headers: { 'Authorization': 'Bearer ' + state.token }
-        })
-      }
+      commit('ADD_USERS_PEOPLE', {
+        people: payload.people
+      })
+    },
 
-      axios.all([getCurrentUser(), getPeople()])
-      .then(axios.spread((currentUser, people) => {
-        commit('ADD_CURRENT_USER', {
-          user: currentUser.data
-        })
+    initPusher ({commit}, payload) {
+      commit('INIT_PUSHER', payload)
+    },
 
-        commit('ADD_USERS_PEOPLE', {
-          people: people.data
-        })
-      }))
+    initAllUsersChannel ({commit}, payload) {
+      commit('INIT_ALL_USERS_CHANNEL', payload)
     }
   }
 })
