@@ -9,6 +9,7 @@ export default new Vuex.Store({
     currentUser: {},
     usersPeople: {},
     presencePusher: null,
+    privatePusher: null,
     allUsersChannel: null
   },
   getters: {

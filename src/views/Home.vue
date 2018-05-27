@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id">{{person.first_name}} {{person.last_name}}</li>
+    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"><a @click="callPerson(12345)">{{person.first_name}} {{person.last_name}}</a></li>
   </div>
 </template>
 
@@ -41,6 +41,12 @@ export default {
     }
   },
   methods: {
+    callPerson (id) {
+      let triggered = this.$store.getters.getAllUsersChannel.trigger(`client-event-id-${id}`, {
+        message: 'test'
+      })
+    },
+
     getCurrentUser () {
       return axios.get('https://www.carenzorgt.nl/api/v1/user', {
         headers: { 'Authorization': 'Bearer ' + this.token }
