@@ -13,7 +13,7 @@ export default {
   name: 'home',
   data () {
     return {
-      
+      registredServiceWorker: null
     }
   },
   computed: {
@@ -78,9 +78,113 @@ export default {
       this.$store.dispatch('initAllUsersChannel', {
         channel: allUsersChannel
       })
+    },
+
+    urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    },
+
+    getNotificationPermissionState () {
+      if (navigator.permissions) {
+        return navigator.permissions.query({name: 'notifications'})
+        .then(result => {
+          return result.state
+        })
+      }
+
+      return new Promise(resolve => {
+        resolve(Notification.permission)
+      })
+    },
+
+    registerServiceWorker () {
+      this.registredServiceWorker = navigator.serviceWorker.register('service-worker.js', { scope: '/' })
+      return this.registredServiceWorker
+      .then(registration => {
+        console.log('Service Worker successfully registred!')
+        this.askPermission()
+        .then(this.subscribeUserToPush())
+      })
+      .catch(error => {
+        console.error('Unable to register service worker', error)
+      })
+    },
+
+    askPermission () {
+      return new Promise((resolve, reject) => {
+        const permissionResult = Notification.requestPermission(result => {
+          resolve(result)
+        })
+
+        if (permissionResult) {
+          permissionResult.then(resolve, reject)
+        }
+      })
+      .then(permissionResult => {
+        if (permissionResult !== 'granted') {
+          throw new Error('Permission was not granted')
+        }
+      })
+    },
+
+    subscribeUserToPush () {
+      return this.registredServiceWorker
+      .then(registration => {
+        const subscribeOptions = {
+          userVisibleOnly: true,
+          applicationServerKey: this.urlBase64ToUint8Array(
+            'BNHxHyF+hP+3rLMC8DsE8a2HMuALWLJNwOVZWOZ4M/oUUcW6Fld1YP/togFiA7sPxBWq1HlYaThG7VqlghcPkgU='
+          )
+        }
+
+        return registration.pushManager.subscribe(subscribeOptions)
+      })
+      .then(pushSubscription => {
+        console.log('Received PushSubscription:', JSON.stringify(pushSubscription))
+        return pushSubscription
+      })
+    },
+
+    sendSubscriptionToBackend(subsciption) {
+      return axios.post('https://c.patrickattema.nl/api/push/subscribe', {
+        body: JSON.stringify(subsciption)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Bad status code from server')
+        }
+
+        return response.json()
+      })
+      .then(responseData => {
+        if (!(responseData.data && responseData.data.success)) {
+          throw new Error('Bad response from server.')
+        }
+      })
+      .catch(err => {
+        console.error('Error saving subscription', err)
+      })
     }
   },
   created () {
+    if (('serviceWorker' in navigator) && ('PushManager' in window)) {
+      this.registerServiceWorker()
+
+    } else {
+      console.log('BROWSER DOES NOT SUPPORT PUSH NOTIFICATIONS')
+    }
+
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
