@@ -7,6 +7,7 @@ export default {
   name: 'getAccessToken',
   created () {
     if (this.$route.hash.match(/\#(?:access_token)\=([\S\s]*?)\&/)) {
+      console.log(this.$route.hash)
       let token = this.$route.hash.match(/\#(?:access_token)\=([\S\s]*?)\&/)[1]
       this.$store.dispatch('addToken', {
         token: token
