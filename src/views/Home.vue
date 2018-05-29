@@ -158,16 +158,27 @@ export default {
     },
 
     sendSubscriptionToBackend(subsciption) {
-      return axios.post(variables.pushSubEndpoint, {
-        user_id: this.$store.getters.getCurrentUser.person_id,
-        body: JSON.stringify(subsciption)
+      let bundledSub = JSON.parse(JSON.stringify(subsciption))
+
+      return axios({
+        method: 'POST',
+        url: variables.pushSubEndpoint, 
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          user_id: this.$store.getters.getCurrentUser.person_id,
+          endpoint: bundledSub.endpoint,
+          keys: {
+            auth: bundledSub.keys.auth,
+            p256dh: bundledSub.keys.p256dh
+          }
+        }
       })
       .then(response => {
-        if (!response.ok) {
+        if (!response.data.status === 200) {
           throw new Error('Bad status code from server')
         }
 
-        return response.json()
+        return JSON.parse(response.data)
       })
       .then(responseData => {
         if (!(responseData.data && responseData.data.success)) {
