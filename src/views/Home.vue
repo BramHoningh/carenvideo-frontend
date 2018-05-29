@@ -174,11 +174,11 @@ export default {
         }
       })
       .then(response => {
-        if (!response.ok) {
+        if (!response.data.status === 200) {
           throw new Error('Bad status code from server')
         }
 
-        return response.json()
+        return JSON.parse(response.data)
       })
       .then(responseData => {
         if (!(responseData.data && responseData.data.success)) {
