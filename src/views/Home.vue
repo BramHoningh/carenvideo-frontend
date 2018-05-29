@@ -144,7 +144,7 @@ export default {
         const subscribeOptions = {
           userVisibleOnly: true,
           applicationServerKey: this.urlBase64ToUint8Array(
-            'BNHxHyF+hP+3rLMC8DsE8a2HMuALWLJNwOVZWOZ4M/oUUcW6Fld1YP/togFiA7sPxBWq1HlYaThG7VqlghcPkgU='
+            'BOvQGEjUy9zXOPx6bI4hL5sSQaGLE95k0EuOe2Yb1PCkfKyQDBt7cGRYgpuQN3C3WcpAjwzRNmW-LTcDUcHsxUU'
           )
         }
 
@@ -162,7 +162,8 @@ export default {
 
       return axios({
         method: 'POST',
-        url: variables.pushSubEndpoint, 
+        // url: variables.pushSubEndpoint,
+        url: 'https://7bf18de9.ngrok.io/api/save-subscription/',
         headers: {'Content-Type': 'application/json'},
         data: {
           user_id: this.$store.getters.getCurrentUser.person_id,
@@ -174,15 +175,36 @@ export default {
         }
       })
       .then(response => {
-        if (!response.data.status === 200) {
+        if (!response.status === 200) {
           throw new Error('Bad status code from server')
         }
 
-        return JSON.parse(response.data)
+        // return JSON.parse(response.data)
+        return response
+
       })
       .then(responseData => {
-        if (!(responseData.data && responseData.data.success)) {
+        console.log(responseData)
+        if (!(responseData.data && responseData.data.data.success)) {
           throw new Error('Bad response from server.')
+        } else {
+          // ONLY FOR TESTING
+          axios({
+            method: 'POST',
+            // url: 'https://c.patrickattema.nl/push/send',
+            url: 'https://7bf18de9.ngrok.io/api/trigger-push-msg/',
+            headers: {'Content-Type': 'application/json'},
+            data: {
+              user_id: 1566404,
+              // user_id: 1543111
+            }
+          })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(err => {
+            console.error(err)
+          })
         }
       })
       .catch(err => {
@@ -199,6 +221,7 @@ export default {
           people: people.data
         })
 
+        console.log(currentUser.data.person_id)
         this.initializePusher(currentUser.data.person_id)
 
         if (('serviceWorker' in navigator) && ('PushManager' in window)) {
