@@ -159,6 +159,7 @@ export default {
 
     sendSubscriptionToBackend(subsciption) {
       return axios.post(variables.pushSubEndpoint, {
+        user_id: this.$store.getters.getCurrentUser.person_id,
         body: JSON.stringify(subsciption)
       })
       .then(response => {
@@ -179,13 +180,6 @@ export default {
     }
   },
   created () {
-    if (('serviceWorker' in navigator) && ('PushManager' in window)) {
-      this.registerServiceWorker()
-
-    } else {
-      console.log('BROWSER DOES NOT SUPPORT PUSH NOTIFICATIONS')
-    }
-
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
@@ -194,7 +188,13 @@ export default {
           people: people.data
         })
 
-        this.initializePusher(currentUser.data._embedded.person.id)
+        this.initializePusher(currentUser.data.person_id)
+
+        if (('serviceWorker' in navigator) && ('PushManager' in window)) {
+          this.registerServiceWorker()
+        } else {
+          console.log('BROWSER DOES NOT SUPPORT PUSH NOTIFICATIONS')
+        }
       }))
     }
   }
