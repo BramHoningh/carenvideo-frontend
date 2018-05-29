@@ -160,12 +160,17 @@ export default {
     sendSubscriptionToBackend(subsciption) {
       let bundledSub = JSON.parse(JSON.stringify(subsciption))
 
-      return axios.post(variables.pushSubEndpoint, {
-        user_id: this.$store.getters.getCurrentUser.person_id,
-        endpoint: bundledSub.endpoint,
-        keys: {
-          auth: bundledSub.keys.auth,
-          p256dh: bundledSub.keys.p256dh
+      return axios({
+        method: 'POST',
+        url: variables.pushSubEndpoint, 
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          user_id: this.$store.getters.getCurrentUser.person_id,
+          endpoint: bundledSub.endpoint,
+          keys: {
+            auth: bundledSub.keys.auth,
+            p256dh: bundledSub.keys.p256dh
+          }
         }
       })
       .then(response => {
