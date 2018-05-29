@@ -6,6 +6,7 @@
 
 <script>
 import Pusher from "pusher-js";
+import variables from '@/variables'
 
 export default {
   name: 'testRoom',
@@ -18,7 +19,7 @@ export default {
     let presencePusher = new Pusher("8dc95d49e9a8f15e0980", {
       cluster: "eu",
       encrypted: true,
-      authEndpoint: "http://localhost:5000/pusher/auth/presence",
+      authEndpoint: variables.pusherPresence,
       auth: {
         params: { id: this.fakeId }
       }
@@ -27,7 +28,7 @@ export default {
     let privatePusher = new Pusher("8dc95d49e9a8f15e0980", {
       cluster: "eu",
       encrypted: true,
-      authEndpoint: "http://localhost:5000/pusher/auth/private"
+      authEndpoint: variables.pusherPrivate
     })
 
     let presenceChannel = presencePusher.subscribe('presence-all')
