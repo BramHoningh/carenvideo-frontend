@@ -158,8 +158,6 @@ export default {
     },
 
     sendSubscriptionToBackend(subsciption) {
-      console.log(JSON.stringify(subsciption))
-
       return axios.post(variables.pushSubEndpoint, {
         user_id: this.$store.getters.getCurrentUser.person_id,
         body: JSON.stringify(subsciption)
