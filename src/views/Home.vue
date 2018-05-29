@@ -164,8 +164,8 @@ export default {
         user_id: this.$store.getters.getCurrentUser.person_id,
         endpoint: bundleSubscription.endpoint,
         keys: {
-          p256dh: bundleSubscription.p256dh,
-          auth: bundleSubscription.auth
+          p256dh: bundleSubscription.keys.p256dh,
+          auth: bundleSubscription.keys.auth
         }
       })
       .then(response => {
