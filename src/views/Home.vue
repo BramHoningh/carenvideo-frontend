@@ -63,7 +63,7 @@ export default {
       let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
         cluster: 'eu',
         encrypted: true,
-        authEndpoint: "http://localhost:5000/pusher/auth/presence",
+        authEndpoint: variables.pusherPresence,
         auth: {
           params: { id: id }
         }
@@ -152,12 +152,13 @@ export default {
       })
       .then(pushSubscription => {
         console.log('Received PushSubscription:', JSON.stringify(pushSubscription))
+        this.sendSubscriptionToBackend(pushSubscription)
         return pushSubscription
       })
     },
 
     sendSubscriptionToBackend(subsciption) {
-      return axios.post('https://c.patrickattema.nl/api/push/subscribe', {
+      return axios.post(variables.pushSubEndpoint, {
         body: JSON.stringify(subsciption)
       })
       .then(response => {
