@@ -195,8 +195,8 @@ export default {
             url: 'https://7bf18de9.ngrok.io/api/trigger-push-msg/',
             headers: {'Content-Type': 'application/json'},
             data: {
-              user_id: 1566404,
-              // user_id: 1543111
+              // user_id: 1566404,
+              user_id: 1543111
             }
           })
           .then(response => {
