@@ -14,6 +14,7 @@ export default new Vuex.Store({
   },
   getters: {
     getToken: state => {
+      // TODO: If token is expired: redirect to https://www.carenzorgt.nl/person/me/apps
       if (localStorage.getItem('carenvideo-token')) {
         return localStorage.getItem('carenvideo-token')
       } else {
