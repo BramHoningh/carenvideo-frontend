@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"><a @click="callPerson(12345)">{{person.first_name}} {{person.last_name}}</a></li>
+    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"><a @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</a></li>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     token () {
-      return this.$store.state.token
+      return this.$store.getters.getToken
     },
 
     currentUser () {
@@ -42,8 +42,23 @@ export default {
   },
   methods: {
     callPerson (id) {
-      let triggered = this.$store.getters.getAllUsersChannel.trigger(`client-event-id-${id}`, {
-        message: 'test'
+      axios({
+        method: 'POST',
+        url: variables.pushTriggerEndpoint,
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          user_id: id,
+          title: `${this.$store.getters.getCurrentUser._embedded.person.first_name} belt jou!`,
+          message: 'Neem op om een video gesprek te beginnen.'
+        }
+      })
+      .then(response => {
+        if (response.status === 200) {
+          this.$router.push(`to-room/${id}`)
+        }
+      })
+      .catch(err => {
+        console.error(err)
       })
     },
 
@@ -112,7 +127,6 @@ export default {
       this.registredServiceWorker = navigator.serviceWorker.register('service-worker.js', { scope: '/' })
       return this.registredServiceWorker
       .then(registration => {
-        console.log('Service Worker successfully registred!')
         this.askPermission()
         .then(this.subscribeUserToPush())
       })
@@ -151,7 +165,6 @@ export default {
         return registration.pushManager.subscribe(subscribeOptions)
       })
       .then(pushSubscription => {
-        console.log('Received PushSubscription:', JSON.stringify(pushSubscription))
         this.sendSubscriptionToBackend(pushSubscription)
         return pushSubscription
       })
@@ -162,8 +175,7 @@ export default {
 
       return axios({
         method: 'POST',
-        // url: variables.pushSubEndpoint,
-        url: 'http://localhost:9012/api/save-subscription/',
+        url: variables.pushSubEndpoint,
         headers: {'Content-Type': 'application/json'},
         data: {
           user_id: this.$store.getters.getCurrentUser.person_id,
@@ -184,29 +196,8 @@ export default {
 
       })
       .then(responseData => {
-        console.log('Response data: ', responseData)
         if (!(responseData.data && responseData.data.data.success)) {
           throw new Error('Bad response from server.')
-        } else {
-          // ONLY FOR TESTING
-          axios({
-            method: 'POST',
-            // url: variables.pushSubEndpoint,
-            url: 'http://localhost:9012/api/trigger-push-msg/',
-            headers: {'Content-Type': 'application/json'},
-            data: {
-              // user_id: 1566404,
-              user_id: 1543111,
-              title: `${this.$store.getters.getCurrentUser._embedded.person.first_name} belt jou!`,
-              message: 'Neem op om een video gesprek te beginnen.'
-            }
-          })
-          .then(response => {
-            console.log('Send Data', response)
-          })
-          .catch(err => {
-            console.error(err)
-          })
         }
       })
       .catch(err => {
@@ -223,7 +214,6 @@ export default {
           people: people.data
         })
 
-        console.log(currentUser.data.person_id)
         this.initializePusher(currentUser.data.person_id)
 
         if (('serviceWorker' in navigator) && ('PushManager' in window)) {

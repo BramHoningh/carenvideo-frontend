@@ -13,6 +13,14 @@ export default new Vuex.Store({
     allUsersChannel: null
   },
   getters: {
+    getToken: state => {
+      if (localStorage.getItem('carenvideo-token')) {
+        return localStorage.getItem('carenvideo-token')
+      } else {
+        return state.token
+      }
+    },
+
     getCurrentUser: state => {
       return state.currentUser
     },
@@ -52,6 +60,7 @@ export default new Vuex.Store({
   },
   actions: {
     addToken ({commit}, payload) {
+      localStorage.setItem('carenvideo-token', payload.token)
       commit('ADD_TOKEN', payload)
     },
 
