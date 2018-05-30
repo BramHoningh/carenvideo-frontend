@@ -163,7 +163,7 @@ export default {
       return axios({
         method: 'POST',
         // url: variables.pushSubEndpoint,
-        url: 'https://7bf18de9.ngrok.io/api/save-subscription/',
+        url: 'http://e1e7a737.ngrok.io/api/save-subscription/',
         headers: {'Content-Type': 'application/json'},
         data: {
           user_id: this.$store.getters.getCurrentUser.person_id,
@@ -192,7 +192,7 @@ export default {
           axios({
             method: 'POST',
             // url: 'https://c.patrickattema.nl/push/send',
-            url: 'https://7bf18de9.ngrok.io/api/trigger-push-msg/',
+            url: 'http://e1e7a737.ngrok.io/api/trigger-push-msg/',
             headers: {'Content-Type': 'application/json'},
             data: {
               // user_id: 1566404,
