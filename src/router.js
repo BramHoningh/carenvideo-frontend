@@ -6,6 +6,7 @@ import variables from './variables'
 import Home from './views/Home.vue'
 import GetAccessToken from './components/oauth/GetAccessToken.vue'
 import SSO from './components/oauth/SSO.vue'
+import ToRoom from './components/room/ToRoom.vue'
 
 // ONLY FOR DEVELOPMENT PURPOSES
 import TESTROOM from './views/TestRoom.vue'
@@ -26,6 +27,11 @@ export default new Router({
           next()
         }
       }
+    },
+    {
+      path: '/to-room/:id',
+      name: 'toRoom',
+      component: ToRoom,
     },
     {
       path: '/oauth',

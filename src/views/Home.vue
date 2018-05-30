@@ -163,7 +163,7 @@ export default {
       return axios({
         method: 'POST',
         // url: variables.pushSubEndpoint,
-        url: 'http://e1e7a737.ngrok.io/api/save-subscription/',
+        url: 'http://localhost:9012/api/save-subscription/',
         headers: {'Content-Type': 'application/json'},
         data: {
           user_id: this.$store.getters.getCurrentUser.person_id,
@@ -184,23 +184,25 @@ export default {
 
       })
       .then(responseData => {
-        console.log(responseData)
+        console.log('Response data: ', responseData)
         if (!(responseData.data && responseData.data.data.success)) {
           throw new Error('Bad response from server.')
         } else {
           // ONLY FOR TESTING
           axios({
             method: 'POST',
-            // url: 'https://c.patrickattema.nl/push/send',
-            url: 'http://e1e7a737.ngrok.io/api/trigger-push-msg/',
+            // url: variables.pushSubEndpoint,
+            url: 'http://localhost:9012/api/trigger-push-msg/',
             headers: {'Content-Type': 'application/json'},
             data: {
               // user_id: 1566404,
-              user_id: 1543111
+              user_id: 1543111,
+              title: `${this.$store.getters.getCurrentUser._embedded.person.first_name} belt jou!`,
+              message: 'Neem op om een video gesprek te beginnen.'
             }
           })
           .then(response => {
-            console.log(response)
+            console.log('Send Data', response)
           })
           .catch(err => {
             console.error(err)
