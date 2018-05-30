@@ -13,12 +13,12 @@ self.addEventListener('push', function(event) {
       {
         action: 'opnemen-action',
         title: 'opnemen',
-        icon: './opnemen128x128.png'
+        icon: './Opnemen16x16.png'
       },
       {
         action: 'afwijzen-action',
         title: 'afwijzen',
-        icon: './Afwijzen128x128.png'
+        icon: './Ophangen16x16.png'
       }
     ]
   });
