@@ -6,18 +6,18 @@ self.addEventListener('push', function(event) {
     icon: './CV512x512.png',
     badge: './CV128x128.png',
     data: {
-      url: `http://localhost:8080/to-room/${eventData.user_id}`
+      url: `http://localhost:8080/to-room/${eventData.id_link}`
     },
     requireInteraction: true,
     actions: [
       {
         action: 'opnemen-action',
-        title: 'opnemen',
+        title: 'Opnemen',
         icon: './Opnemen16x16.png'
       },
       {
         action: 'afwijzen-action',
-        title: 'afwijzen',
+        title: 'Afwijzen',
         icon: './Ophangen16x16.png'
       }
     ]
