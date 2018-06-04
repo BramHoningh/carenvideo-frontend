@@ -1,13 +1,19 @@
 %btn {
-  padding: 10px 30px;
+  padding: 15px 30px;
+  margin: 5px;
   min-width: 8em;
-  font-family: inherit;
-  font-size: 20px;
+  font-family: 'Lato';
+  font-size: 1.5rem;
+  font-weight: 800;
+  border-radius: 12px;
   text-align: center;
   border: none;
-  border-radius: 3px;
   transition: all 230ms;
-  cursor: pointer;
+  cursor: pointer; 
+}
+
+button {
+  @extend %btn;
 }
 
 .btn-primary {
@@ -22,4 +28,6 @@
 
 .btn-secondary {
   @extend %btn;
+  background-color: $caren-darkblue;
+  color: white;
 }
