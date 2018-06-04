@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"><a @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</a></li>
+    <Person :person="person" v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"/>
   </div>
 </template>
 
@@ -9,8 +9,13 @@ import axios from 'axios'
 import Pusher from 'pusher-js'
 import variables from '@/variables'
 
+import Person from '@/components/home/Person.vue'
+
 export default {
   name: 'home',
+  components: {
+    Person
+  },
   data () {
     return {
       registredServiceWorker: null
@@ -41,27 +46,6 @@ export default {
     }
   },
   methods: {
-    callPerson (id) {
-      axios({
-        method: 'POST',
-        url: variables.pushTriggerEndpoint,
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          user_id: id,
-          title: `${this.$store.getters.getCurrentUser._embedded.person.first_name} belt jou!`,
-          message: 'Neem op om een video gesprek te beginnen.'
-        }
-      })
-      .then(response => {
-        if (response.status === 200) {
-          this.$router.push(`to-room/${id}`)
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
-    },
-
     getCurrentUser () {
       return axios.get('https://www.carenzorgt.nl/api/v1/user', {
         headers: { 'Authorization': 'Bearer ' + this.token }
