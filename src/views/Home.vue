@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"><a @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</a></li>
+    <li v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id">
+      <a @click="callPerson(person.id)"><button class="btn-primary">{{person.first_name}} {{person.last_name}}</button></a>
+    </li>
   </div>
 </template>
 
@@ -226,3 +228,7 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+  @import '../assets/styles/all';
+</style>
