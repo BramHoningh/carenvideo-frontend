@@ -6,7 +6,7 @@
 
 <script>
 import axios from 'axios'
-import SHA256 from 'crypto-js/sha256'
+import Hashids from 'hashids'
 import variables from '@/variables.js'
 
 export default {
@@ -14,7 +14,8 @@ export default {
   props: ['person'],
   methods: {
     callPerson (id) {
-      let idLink = SHA256(id)
+      let idLink = new Hashids().encode(id)
+      console.log(idLink)
 
       axios({
         method: 'POST',

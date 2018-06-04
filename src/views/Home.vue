@@ -111,7 +111,7 @@ export default {
       this.registredServiceWorker = navigator.serviceWorker.register('service-worker.js', { scope: '/' })
       return this.registredServiceWorker
       .then(registration => {
-        this.askPermission()
+        return this.askPermission()
         .then(this.subscribeUserToPush())
       })
       .catch(error => {
