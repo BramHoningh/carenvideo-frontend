@@ -12,12 +12,12 @@ self.addEventListener('push', function(event) {
     actions: [
       {
         action: 'opnemen-action',
-        title: 'opnemen',
+        title: 'Opnemen',
         icon: './Opnemen16x16.png'
       },
       {
         action: 'afwijzen-action',
-        title: 'afwijzen',
+        title: 'Afwijzen',
         icon: './Ophangen16x16.png'
       }
     ]
