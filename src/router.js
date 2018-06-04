@@ -4,6 +4,8 @@ import store from './store'
 import variables from './variables'
 
 import Home from './views/Home.vue'
+import Room from './views/Room.vue'
+
 import GetAccessToken from './components/oauth/GetAccessToken.vue'
 import SSO from './components/oauth/SSO.vue'
 import ToRoom from './components/room/ToRoom.vue'
@@ -32,6 +34,11 @@ export default new Router({
       path: '/to-room/:id',
       name: 'toRoom',
       component: ToRoom,
+    },
+    {
+      path: '/room/:roomId',
+      name: 'room',
+      component: Room
     },
     {
       path: '/oauth',

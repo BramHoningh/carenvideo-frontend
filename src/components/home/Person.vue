@@ -30,7 +30,8 @@ export default {
       })
       .then(response => {
         if (response.status === 200) {
-          this.$router.push(`to-room/${idLink}`)
+          // this.$router.push(`to-room/${idLink}`)
+          this.$router.push(`room/${idLink}`)
         }
       })
       .catch(err => {
