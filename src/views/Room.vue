@@ -34,10 +34,6 @@ export default {
   },
   methods: {
     initializePusher (stream) {
-      Pusher.logToConsole = true;
-      console.log(this.$store.getters.getCurrentUser.person_id)
-      console.log(this.id)
-
       if (!this.$store.getters.getPresencePusherInstance) {
         let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
           cluster: 'eu',
@@ -64,8 +60,6 @@ export default {
       let self = this
 
       privateChannel.bind("pusher:subscription_succeeded", function() {
-        console.log('Successfully subscribed', privateChannel.members.count)
-
         let isInitiator = (privateChannel.members.count === 2) ? true : false
         self.startStream(stream, isInitiator, privateChannel)        
       });
@@ -77,9 +71,6 @@ export default {
     },
 
     startStream(stream, isInitiator, channel) {
-      console.log('other stream: isInitiator', isInitiator)
-      console.log('with channel:', channel)
-
       let video = this.$refs.ownVideo;
       video.srcObject = stream;
       video.play();
@@ -134,13 +125,10 @@ export default {
   },
   created () {
     if (this.$store.getters.getToken && !this.$store.getters.getCurrentUser.person_id) {
-      console.log('GET USER')
       axios.get('https://www.carenzorgt.nl/api/v1/user', {
         headers: { 'Authorization': 'Bearer ' + this.$store.getters.getToken }
       })
       .then(response => {
-        console.log(response.data.person_id)
-
         this.id = response.data.person_id
 
         this.$store.dispatch('addCurrentUser', {
