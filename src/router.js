@@ -8,10 +8,6 @@ import Room from './views/Room.vue'
 
 import GetAccessToken from './components/oauth/GetAccessToken.vue'
 import SSO from './components/oauth/SSO.vue'
-import ToRoom from './components/room/ToRoom.vue'
-
-// ONLY FOR DEVELOPMENT PURPOSES
-import TESTROOM from './views/TestRoom.vue'
 
 Vue.use(Router)
 
@@ -31,11 +27,6 @@ export default new Router({
       }
     },
     {
-      path: '/to-room/:id',
-      name: 'toRoom',
-      component: ToRoom,
-    },
-    {
       path: '/room/:roomId',
       name: 'room',
       component: Room
@@ -49,11 +40,6 @@ export default new Router({
       path: '/oauth/sso',
       name: 'sso',
       component: SSO
-    },
-    {
-      path: '/test',
-      name: 'test-room',
-      component: TESTROOM
     }
   ]
 })

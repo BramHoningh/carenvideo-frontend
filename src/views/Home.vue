@@ -193,6 +193,8 @@ export default {
     }
   },
   created () {
+    console.log('Created')
+
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
