@@ -2,7 +2,7 @@
 <div class="room">
   <div class="video-container">
     <video class="streamVideo" ref="streamVideo" autoplay></video>
-    <video class="ownVideo" ref="ownVideo" autoplay></video>
+    <video class="ownVideo" ref="ownVideo" autoplay muted></video>
   </div>
 </div>
 </template>
@@ -10,6 +10,7 @@
 <script>
 import Pusher from "pusher-js";
 import SimplePeer from "simple-peer";
+import axios from 'axios';
 
 import variables from '../variables'
 
@@ -21,112 +22,140 @@ export default {
       hasAnswer: false,
       pusher: null,
       p: null,
-      privateChannel: null
+      count: 0,
+      stream: null,
+      id: null
     };
   },
+  computed: {
+    privateChannel () {
+      return this.$store.getters.getPrivateChannel
+    }
+  },
   methods: {
-    initializePusher () {
-      let privatePUsher = new Pusher('8dc95d49e9a8f15e0980', {
-        cluster: 'eu',
-        encrypted: true,
-        authEndpoint: variables.pusherPrivate,
-      })
+    initializePusher (stream) {
+      Pusher.logToConsole = true;
+      console.log(this.$store.getters.getCurrentUser.person_id)
+      console.log(this.id)
 
-      this.$store.dispatch('initPrivatePusher', {
-        pusher: privatePusher
-      })
+      if (!this.$store.getters.getPresencePusherInstance) {
+        let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
+          cluster: 'eu',
+          encrypted: true,
+          authEndpoint: variables.pusherPresence,
+          auth: {
+            params: {
+              id: this.$store.getters.getCurrentUser.person_id || this.id
+            }
+          }
+        })
 
-      console.log(this.$route.params.roomId)
-
-      this.privateChannel = this.$store.getters.getPrivatePusherInstance.subscribe(`private-${this.$route.params.roomId}`)
-
-    },
-
-    gotMedia(stream) {
-      // var isInitiator = false;
-      // var hasAnswer = false;
-      // console.log("pusher before", this.pusher);
-
-      
-
-      // console.log("pusher after", this.pusher);
-
-      // this.presenceChannel = this.pusher.subscribe(
-      //   "presence-connection-channel"
-      // );
-
-      let self = this;
-
-      this.privateChannel.bind("pusher:subscription_succeeded", function() {
-        console.log("New subscriber", self.privateChannel.members.count);
-        self.startPeer(self.privateChannel.members.count, stream);
-      });
-    },
-
-    startPeer(count, stream) {
-      let ownVideo = this.$refs.ownVideo
-      ownVideo.srcObject = stream
-      ownVideo.play()
-
-      if (count === 2) {
-        this.isInitiator = true;
+        this.$store.dispatch('initPresencePusher', {
+          pusher: presencePusher
+        })
       }
 
-      let self = this;
+      let privateChannel = this.$store.getters.getPresencePusherInstance.subscribe(`presence-${this.$route.params.roomId}`)
 
-      this.privateChannel.bind("client-send-signal-event", function(data) {
-        console.log("Clien Send Signal Event with data: ", data);
-        self.p.signal(data.msg);
+      this.$store.dispatch('initPrivateChannel', {
+        channel: privateChannel
+      })
+
+      let self = this
+
+      privateChannel.bind("pusher:subscription_succeeded", function() {
+        console.log('Successfully subscribed', privateChannel.members.count)
+
+        let isInitiator = (privateChannel.members.count === 2) ? true : false
+        self.startStream(stream, isInitiator, privateChannel)        
       });
 
-      this.p = new SimplePeer({
-        initiator: this.isInitiator,
-        trickle: true,
+      privateChannel.bind('pusher:subscription_error', function(status) {
+        console.log(status)
+      });
+
+    },
+
+    startStream(stream, isInitiator, channel) {
+      console.log('other stream: isInitiator', isInitiator)
+      console.log('with channel:', channel)
+
+      let video = this.$refs.ownVideo;
+      video.srcObject = stream;
+      video.play();
+
+      let gotData = false
+
+      let peer = new SimplePeer({
+        initiator: isInitiator,
         stream: stream
-      });
+      })
 
-      this.p.on("signal", function(data) {
-        console.log("On signal listener with data: ", data);
-        var triggered = self.privateChannel.trigger(
-          "client-send-signal-event",
-          {
+      peer.on('signal', (data) => {
+        if (isInitiator || gotData) {
+          channel.trigger('client-peer-data-event', {
             msg: JSON.stringify(data)
-          }
-        );
-      });
+          })
+        }
+      })
 
-      this.p.on("error", function(err) {
-        console.log("error", err);
-      });
+      channel.bind('client-peer-data-event', (data) => {
+        gotData = true
+        peer.signal(data.msg)
+      })
 
-      this.p.on("connect", function() {
-        console.log("CONNECT");
-      });
-
-      this.p.on("data", function(data) {
-        console.log("data: " + data);
-      });
-
-      this.p.on("stream", function(stream) {
-        console.log("GOT STREAM");
-        let video = self.$refs.streamVideo;
+      peer.on('stream', (stream) => {
+        let video = this.$refs.streamVideo;
         video.srcObject = stream;
         video.play();
-      });
+      })
+
+      peer.on('error', (error) => {
+        console.error(error)
+      })
     }
   },
   mounted() {
     // get video/voice stream
+    navigator.getUserMedia = ( navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia);
+
+    let self = this
+
     navigator.getUserMedia(
       { video: true, audio: true },
-      this.gotMedia,
+      this.initializePusher,
       function(err) {
         console.log("MEDIA ERROR", err);
       }
     );
   },
   created () {
-    this.initializePusher()
+    if (this.$store.getters.getToken && !this.$store.getters.getCurrentUser.person_id) {
+      console.log('GET USER')
+      axios.get('https://www.carenzorgt.nl/api/v1/user', {
+        headers: { 'Authorization': 'Bearer ' + this.$store.getters.getToken }
+      })
+      .then(response => {
+        console.log(response.data.person_id)
+
+        this.id = response.data.person_id
+
+        this.$store.dispatch('addCurrentUser', {
+          currentUser: response.data
+        })
+
+        this.$store.getters.getCurrentUser
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    } else {
+      console.log('NO TOKEN SET')
+    }
+    
   }
 }
 </script>

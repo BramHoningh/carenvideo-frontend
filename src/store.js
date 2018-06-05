@@ -41,6 +41,10 @@ export default new Vuex.Store({
 
     getAllUsersChannel: state => {
       return state.allUsersChannel
+    },
+
+    getPrivateChannel: state => {
+      return state.privateChannel
     }
   },
   mutations: {
@@ -76,6 +80,12 @@ export default new Vuex.Store({
     addToken ({commit}, payload) {
       localStorage.setItem('carenvideo-token', payload.token)
       commit('ADD_TOKEN', payload)
+    },
+
+    addCurrentUser({commit}, payload) {
+      commit('ADD_CURRENT_USER', {
+        user: payload.currentUser
+      })
     },
 
     addPeople ({commit}, payload) {
