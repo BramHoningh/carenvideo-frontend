@@ -3,7 +3,7 @@
   margin: 5px;
   min-width: 8em;
   font-family: 'Lato';
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 800;
   border-radius: 12px;
   text-align: center;
@@ -22,7 +22,7 @@ button {
   color: $white;
 
   &:hover {
-      background-color: $caren-purple-hover;
+      box-shadow: inset 3px 3px 10px 0px #313131;
   }
 }
 

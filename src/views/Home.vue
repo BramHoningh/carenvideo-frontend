@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <div class="greeting"></div>
     <Person :person="person" v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"/>
   </div>
 </template>
@@ -18,7 +19,9 @@ export default {
   },
   data () {
     return {
-      registredServiceWorker: null
+      registredServiceWorker: null,
+      greeting: '',
+      dateTime: new Date(),
     }
   },
   computed: {
@@ -209,6 +212,7 @@ export default {
         }
       }))
     }
+    console.log(dateTime);
   }
 }
 </script>
