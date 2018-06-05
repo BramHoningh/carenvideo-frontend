@@ -193,6 +193,8 @@ export default {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
+        console.log(currentUser.data)
+
         this.$store.dispatch('addPeople', {
           currentUser: currentUser.data,
           people: people.data
