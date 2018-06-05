@@ -47,13 +47,13 @@ export default {
   },
   methods: {
     getCurrentUser () {
-      return axios.get('https://www.carenzorgt.nl/api/v1/user', {
+      return axios.get(variables.userEndpoint, {
         headers: { 'Authorization': 'Bearer ' + this.token }
       })
     },
 
     getPeople () {
-      return axios.get('https://www.carenzorgt.nl/api/v1/people', {
+      return axios.get(variables.peopleEndpoint, {
         headers: { 'Authorization': 'Bearer ' + this.token }
       })
     },
@@ -142,7 +142,7 @@ export default {
         const subscribeOptions = {
           userVisibleOnly: true,
           applicationServerKey: this.urlBase64ToUint8Array(
-            'BOvQGEjUy9zXOPx6bI4hL5sSQaGLE95k0EuOe2Yb1PCkfKyQDBt7cGRYgpuQN3C3WcpAjwzRNmW-LTcDUcHsxUU'
+            variables.applicationServerKey
           )
         }
 
