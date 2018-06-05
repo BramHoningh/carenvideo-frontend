@@ -1,7 +1,7 @@
 <template>
 <div class="person">
   <div class="contact-image">
-
+    <img src="" alt="">
   </div>
   <button class="btn-secondary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
 </div>
