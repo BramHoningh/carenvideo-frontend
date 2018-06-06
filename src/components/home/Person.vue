@@ -1,6 +1,9 @@
 <template>
 <div class="person">
-  <span @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</span>
+  <div class="person-image">
+    <img src="" alt="">
+  </div>
+  <button class="btn-primary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
 </div>
 </template>
 
