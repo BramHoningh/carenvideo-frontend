@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="contacts">
-    <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
+      <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
     </div>
   </div>
 </template>
