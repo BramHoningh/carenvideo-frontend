@@ -18,7 +18,8 @@ export default {
   },
   data () {
     return {
-      registredServiceWorker: null
+      registredServiceWorker: null,
+      onlineUsers: []
     }
   },
   computed: {
@@ -76,6 +77,23 @@ export default {
 
       this.$store.dispatch('initAllUsersChannel', {
         channel: allUsersChannel
+      })
+
+      allUsersChannel.bind('pusher:subscription_succeeded', (members) => {
+       console.log('Successfully subscribed!')
+       members.each(member => {
+          console.log(member.id)
+          this.$store.dispatch('addOnlineMember', {
+            memberId: member.id
+          })
+        })
+      })
+
+      allUsersChannel.bind('pusher:member_added', (member) => {
+        console.log('New Member!', member.id)
+        this.$store.dispatch('addOnlineMember', {
+          memberId: member.id
+        })
       })
     },
 

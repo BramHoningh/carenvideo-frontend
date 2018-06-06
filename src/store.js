@@ -11,7 +11,8 @@ export default new Vuex.Store({
     presencePusher: null,
     privatePusher: null,
     allUsersChannel: null,
-    privateChannel: null
+    privateChannel: null,
+    onlineMembers: []
   },
   getters: {
     getToken: state => {
@@ -45,6 +46,10 @@ export default new Vuex.Store({
 
     getPrivateChannel: state => {
       return state.privateChannel
+    },
+
+    getOnlineMembers: state => {
+      return state.onlineMembers
     }
   },
   mutations: {
@@ -74,6 +79,10 @@ export default new Vuex.Store({
 
     INIT_PRIVATE_CHANNEL (state, payload) {
       state.privateChannel = payload.channel
+    },
+
+    ADD_ONLINE_MEMBER (state, payload) {
+      state.onlineMembers.push(payload.memberId)
     }
   },
   actions: {
@@ -112,6 +121,10 @@ export default new Vuex.Store({
 
     initPrivateChannel ({commit}, payload) {
       commit('INIT_PRIVATE_CHANNEL', payload)
+    },
+
+    addOnlineMember ({commit}, payload) {
+      commit('ADD_ONLINE_MEMBER', payload)
     }
   }
 })
