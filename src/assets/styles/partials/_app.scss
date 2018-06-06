@@ -1,0 +1,16 @@
+#app {
+    background-color: $caren-gradient;
+}
+.person {
+    display: inline-grid;
+}
+.person-image {
+    min-height: 100px;
+    min-width: 100px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    margin: auto;
+}

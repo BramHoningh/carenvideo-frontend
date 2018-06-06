@@ -1,6 +1,6 @@
 <template>
 <div class="person">
-  <div class="contact-image">
+  <div class="person-image">
     <img src="" alt="">
   </div>
   <span v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
@@ -15,12 +15,7 @@ import variables from '@/variables.js'
 
 export default {
   name: 'person',
-  props: ['person', 'isOnline'],
-  computed: {
-    getOnlineMembers () {
-      return this.$store.getters.getOnlineMembers
-    }
-  },
+  props: ['person'],
   methods: {
     callPerson (id) {
       let idLink = new Hashids().encode(id)
