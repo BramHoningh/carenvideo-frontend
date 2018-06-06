@@ -1,19 +1,13 @@
 %btn {
-  padding: 15px 30px;
-  margin: 5px;
+  padding: 10px 30px;
   min-width: 8em;
-  font-family: 'Lato';
-  font-size: 1.25rem;
-  font-weight: 800;
-  border-radius: 12px;
+  font-family: inherit;
+  font-size: 20px;
   text-align: center;
   border: none;
+  border-radius: 3px;
   transition: all 230ms;
-  cursor: pointer; 
-}
-
-button {
-  @extend %btn;
+  cursor: pointer;
 }
 
 .btn-primary {
@@ -22,12 +16,10 @@ button {
   color: $white;
 
   &:hover {
-      box-shadow: inset 3px 3px 10px 0px #313131;
+      background-color: $caren-purple-hover;
   }
 }
 
 .btn-secondary {
   @extend %btn;
-  background-color: $caren-darkblue;
-  color: white;
 }

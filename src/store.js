@@ -10,7 +10,8 @@ export default new Vuex.Store({
     usersPeople: {},
     presencePusher: null,
     privatePusher: null,
-    allUsersChannel: null
+    allUsersChannel: null,
+    privateChannel: null
   },
   getters: {
     getToken: state => {
@@ -34,8 +35,16 @@ export default new Vuex.Store({
       return state.presencePusher
     },
 
+    getPrivatePusherInstance: state => {
+      return state.presencePusher
+    },
+
     getAllUsersChannel: state => {
       return state.allUsersChannel
+    },
+
+    getPrivateChannel: state => {
+      return state.privateChannel
     }
   },
   mutations: {
@@ -55,14 +64,28 @@ export default new Vuex.Store({
       state.presencePusher = payload.pusher
     },
 
+    INIT_PRIVATE_PUSHER (state, payload) {
+      state.privatePusher = payload.pusher
+    },
+
     INIT_ALL_USERS_CHANNEL (state, payload) {
       state.allUsersChannel = payload.channel
+    },
+
+    INIT_PRIVATE_CHANNEL (state, payload) {
+      state.privateChannel = payload.channel
     }
   },
   actions: {
     addToken ({commit}, payload) {
       localStorage.setItem('carenvideo-token', payload.token)
       commit('ADD_TOKEN', payload)
+    },
+
+    addCurrentUser({commit}, payload) {
+      commit('ADD_CURRENT_USER', {
+        user: payload.currentUser
+      })
     },
 
     addPeople ({commit}, payload) {
@@ -79,8 +102,16 @@ export default new Vuex.Store({
       commit('INIT_PRESENCE_PUSHER', payload)
     },
 
+    initPrivatePusher ({commit}, payload) {
+      commit('INIT_PRIVATE_PUSHER', payload)
+    },
+
     initAllUsersChannel ({commit}, payload) {
       commit('INIT_ALL_USERS_CHANNEL', payload)
+    },
+
+    initPrivateChannel ({commit}, payload) {
+      commit('INIT_PRIVATE_CHANNEL', payload)
     }
   }
 })

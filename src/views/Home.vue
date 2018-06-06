@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <div class="greeting"></div>
     <Person :person="person" v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"/>
   </div>
 </template>
@@ -19,9 +18,7 @@ export default {
   },
   data () {
     return {
-      registredServiceWorker: null,
-      greeting: '',
-      dateTime: new Date(),
+      registredServiceWorker: null
     }
   },
   computed: {
@@ -196,6 +193,8 @@ export default {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
+        console.log(currentUser.data)
+
         this.$store.dispatch('addPeople', {
           currentUser: currentUser.data,
           people: people.data
@@ -210,11 +209,6 @@ export default {
         }
       }))
     }
-    console.log(dateTime);
   }
 }
 </script>
-
-<style lang="sass" scoped>
-  @import '../assets/styles/all';
-</style>
