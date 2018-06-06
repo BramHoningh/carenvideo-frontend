@@ -1,17 +1,40 @@
 #app {
     background-color: $caren-gradient;
 }
+body, html {
+    margin: 0;
+}
+.home {
+    position: relative;
+    min-height: 100vh;
+}
+.person {
+    display: inline-grid;
+    margin: 20%;
+}
+.contacts {
+    min-width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
 %person {
     display: inline-grid;
     font-family: 'Lato';
-    font-size: 1.75rem;
-    font-weight: 600;
+    font-size: 2.2rem;
+    font-weight: 500;
     color: white;
 }
 .person-name {
    @extend %person; 
    display: block; 
    margin-top: 1rem;
+   span {
+        line-height: 1;
+        transition: all 230ms;
+        cursor: pointer;
+    }
 }
 .person-status {
     @extend %person; 
@@ -26,14 +49,14 @@
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
-    height: 200px;
-    width: 200px;
+    height: 180px;
+    width: 180px;
     margin: auto;
     img {
         top: 50%;
         left: 50%;
-        width: 110px;
-        height: 110px;
+        width: 90px;
+        height: 90px;
         margin-top: 40px;
     }
 }

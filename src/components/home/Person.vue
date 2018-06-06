@@ -52,14 +52,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-span {
-  line-height: 1;
-  transition: all 230ms;
-  cursor: pointer;
 
-  &:hover {
-    font-weight: bold;
-  }
-}
 </style>
 
