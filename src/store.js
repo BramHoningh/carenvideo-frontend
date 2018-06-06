@@ -83,6 +83,13 @@ export default new Vuex.Store({
 
     ADD_ONLINE_MEMBER (state, payload) {
       state.onlineMembers.push(payload.memberId)
+    },
+
+    REMOVE_ONLINE_MEMBER (state, payload) {
+      let index = state.onlineMembers.indexOf(payload.memberId)
+      if (index > -1) {
+        state.onlineMembers.splice(index, 1)
+      }
     }
   },
   actions: {
@@ -125,6 +132,10 @@ export default new Vuex.Store({
 
     addOnlineMember ({commit}, payload) {
       commit('ADD_ONLINE_MEMBER', payload)
+    },
+
+    removeOnlineMember ({commit}, payload) {
+      commit('REMOVE_ONLINE_MEMBER', payload)
     }
   }
 })

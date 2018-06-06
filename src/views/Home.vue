@@ -95,6 +95,13 @@ export default {
           memberId: member.id
         })
       })
+
+      allUsersChannel.bind('pusher:member_removed', (member) => {
+        console.log('Member went offline', member.id)
+        this.$store.dispatch('removeOnlineMember', {
+          memberId: member.id
+        })
+      })
     },
 
     urlBase64ToUint8Array(base64String) {

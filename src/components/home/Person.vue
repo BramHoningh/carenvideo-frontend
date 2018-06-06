@@ -15,7 +15,6 @@ export default {
   props: ['person', 'isOnline'],
   computed: {
     getOnlineMembers () {
-      console.log(this.$store.getters.getOnlineMembers.indexOf("1543111"))
       return this.$store.getters.getOnlineMembers
     }
   },
