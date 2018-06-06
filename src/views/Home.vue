@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Person :person="person" v-if="usersPeople && index !== 0" v-for="(person, index) in usersPeople" :key="person.id"/>
+    <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
 
     usersPeople () {
       if (this.$store.getters.getUsersPeople._embedded) {
-        return this.$store.getters.getUsersPeople._embedded.items
+        return this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id)
       } else {
         return []
       }
