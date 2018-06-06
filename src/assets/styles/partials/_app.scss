@@ -10,7 +10,9 @@ body, html {
 }
 .person {
     display: inline-grid;
-    margin: 20%;
+    margin: 20px;
+    max-width: 230px;
+    cursor: pointer;
 }
 .contacts {
     min-width: 80%;
