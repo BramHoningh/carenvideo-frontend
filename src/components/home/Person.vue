@@ -3,6 +3,7 @@
   <div class="contact-image">
     <img src="" alt="">
   </div>
+  <span v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
   <button class="btn-secondary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
 </div>
 </template>
