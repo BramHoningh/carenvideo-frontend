@@ -59,7 +59,7 @@ export default {
       })
     },
 
-    initializePusher (id) {
+    initializePusher (id, channelNameId) {
       let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
         cluster: 'eu',
         encrypted: true,
@@ -73,16 +73,17 @@ export default {
         pusher: presencePusher
       })
 
-      let allUsersChannel = this.$store.getters.getPresencePusherInstance.subscribe('presence-all')
+      let channelNamePrefix = 'presence-all-'
+      let channelnameSuffix = (channelNameId) ? channelNameId.toString() : id.toString()
+
+      let allUsersChannel = this.$store.getters.getPresencePusherInstance.subscribe(channelNamePrefix + channelnameSuffix)
 
       this.$store.dispatch('initAllUsersChannel', {
         channel: allUsersChannel
       })
 
       allUsersChannel.bind('pusher:subscription_succeeded', (members) => {
-       console.log('Successfully subscribed!')
        members.each(member => {
-          console.log(member.id)
           this.$store.dispatch('addOnlineMember', {
             memberId: member.id
           })
@@ -90,14 +91,12 @@ export default {
       })
 
       allUsersChannel.bind('pusher:member_added', (member) => {
-        console.log('New Member!', member.id)
         this.$store.dispatch('addOnlineMember', {
           memberId: member.id
         })
       })
 
       allUsersChannel.bind('pusher:member_removed', (member) => {
-        console.log('Member went offline', member.id)
         this.$store.dispatch('removeOnlineMember', {
           memberId: member.id
         })
@@ -200,7 +199,6 @@ export default {
           throw new Error('Bad status code from server')
         }
 
-        // return JSON.parse(response.data)
         return response
 
       })
@@ -218,14 +216,13 @@ export default {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
-        console.log(currentUser.data)
 
         this.$store.dispatch('addPeople', {
           currentUser: currentUser.data,
           people: people.data
         })
 
-        this.initializePusher(currentUser.data.person_id)
+        this.initializePusher(currentUser.data.person_id, currentUser.data._embedded.person.owner_id)
 
         if (('serviceWorker' in navigator) && ('PushManager' in window)) {
           this.registerServiceWorker()
