@@ -18,7 +18,8 @@ export default {
   },
   data () {
     return {
-      registredServiceWorker: null
+      registredServiceWorker: null,
+      onlineUsers: []
     }
   },
   computed: {
@@ -47,18 +48,18 @@ export default {
   },
   methods: {
     getCurrentUser () {
-      return axios.get('https://www.carenzorgt.nl/api/v1/user', {
+      return axios.get(variables.userEndpoint, {
         headers: { 'Authorization': 'Bearer ' + this.token }
       })
     },
 
     getPeople () {
-      return axios.get('https://www.carenzorgt.nl/api/v1/people', {
+      return axios.get(variables.peopleEndpoint, {
         headers: { 'Authorization': 'Bearer ' + this.token }
       })
     },
 
-    initializePusher (id) {
+    initializePusher (id, channelNameId) {
       let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
         cluster: 'eu',
         encrypted: true,
@@ -72,10 +73,33 @@ export default {
         pusher: presencePusher
       })
 
-      let allUsersChannel = this.$store.getters.getPresencePusherInstance.subscribe('presence-all')
+      let channelNamePrefix = 'presence-all-'
+      let channelnameSuffix = (channelNameId) ? channelNameId.toString() : id.toString()
+
+      let allUsersChannel = this.$store.getters.getPresencePusherInstance.subscribe(channelNamePrefix + channelnameSuffix)
 
       this.$store.dispatch('initAllUsersChannel', {
         channel: allUsersChannel
+      })
+
+      allUsersChannel.bind('pusher:subscription_succeeded', (members) => {
+       members.each(member => {
+          this.$store.dispatch('addOnlineMember', {
+            memberId: member.id
+          })
+        })
+      })
+
+      allUsersChannel.bind('pusher:member_added', (member) => {
+        this.$store.dispatch('addOnlineMember', {
+          memberId: member.id
+        })
+      })
+
+      allUsersChannel.bind('pusher:member_removed', (member) => {
+        this.$store.dispatch('removeOnlineMember', {
+          memberId: member.id
+        })
       })
     },
 
@@ -142,7 +166,7 @@ export default {
         const subscribeOptions = {
           userVisibleOnly: true,
           applicationServerKey: this.urlBase64ToUint8Array(
-            'BOvQGEjUy9zXOPx6bI4hL5sSQaGLE95k0EuOe2Yb1PCkfKyQDBt7cGRYgpuQN3C3WcpAjwzRNmW-LTcDUcHsxUU'
+            variables.applicationServerKey
           )
         }
 
@@ -175,7 +199,6 @@ export default {
           throw new Error('Bad status code from server')
         }
 
-        // return JSON.parse(response.data)
         return response
 
       })
@@ -193,14 +216,13 @@ export default {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
-        console.log(currentUser.data)
 
         this.$store.dispatch('addPeople', {
           currentUser: currentUser.data,
           people: people.data
         })
 
-        this.initializePusher(currentUser.data.person_id)
+        this.initializePusher(currentUser.data.person_id, currentUser.data._embedded.person.owner_id)
 
         if (('serviceWorker' in navigator) && ('PushManager' in window)) {
           this.registerServiceWorker()
