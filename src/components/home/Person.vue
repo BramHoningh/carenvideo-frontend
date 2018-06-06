@@ -1,7 +1,9 @@
 <template>
 <div class="person">
-  <span @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</span>
-  <span v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
+  <div class="contact-image">
+    <img src="" alt="">
+  </div>
+  <button class="btn-secondary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
 </div>
 </template>
 
