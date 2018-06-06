@@ -1,11 +1,11 @@
 <template>
-<div class="person" @click="callPerson(person.id)">
-  <div class="person-image">
-    <img src="" alt="">
+  <div class="person" @click="callPerson(person.id)">
+    <div class="person-image">
+      <img src="../../assets/images/person-icon.svg" alt="">
+    </div>
+    <span class="person-status" v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
+    <span class="person-name" >{{person.first_name}} {{person.last_name}}</span>
   </div>
-  <span class="person-status" v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
-  <span class="person-name" >{{person.first_name}} {{person.last_name}}</span>
-</div>
 </template>
 
 <script>
