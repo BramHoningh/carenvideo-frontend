@@ -14,7 +14,12 @@ import variables from '@/variables.js'
 
 export default {
   name: 'person',
-  props: ['person'],
+  props: ['person', 'isOnline'],
+  computed: {
+    getOnlineMembers () {
+      return this.$store.getters.getOnlineMembers
+    }
+  },
   methods: {
     callPerson (id) {
       let idLink = new Hashids().encode(id)
