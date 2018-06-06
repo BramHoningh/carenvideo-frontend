@@ -1,9 +1,9 @@
 <template>
 <div class="person">
-  <div class="contact-image">
+  <div class="person-image">
     <img src="" alt="">
   </div>
-  <button class="btn-secondary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
+  <button class="btn-primary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
 </div>
 </template>
 
@@ -14,12 +14,7 @@ import variables from '@/variables.js'
 
 export default {
   name: 'person',
-  props: ['person', 'isOnline'],
-  computed: {
-    getOnlineMembers () {
-      return this.$store.getters.getOnlineMembers
-    }
-  },
+  props: ['person'],
   methods: {
     callPerson (id) {
       let idLink = new Hashids().encode(id)
