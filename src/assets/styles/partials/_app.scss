@@ -1,16 +1,31 @@
 #app {
     background-color: $caren-gradient;
 }
-.person {
+%person {
     display: inline-grid;
+    font-family: 'Lato';
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
 }
+.person-name {
+   @extend %person; 
+   display: block; 
+}
+.person-status {
+    @extend %person; 
+    display: block;
+    margin-top: 1rem;
+ }
 .person-image {
+    box-shadow: inset 10px 10px 10px 0 rgba(0, 0, 0, 0.04);
+    border: solid 10px #ffffff; 
     min-height: 100px;
     min-width: 100px;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
-    height: 100px;
-    width: 100px;
+    height: 250px;
+    width: 250px;
     margin: auto;
 }

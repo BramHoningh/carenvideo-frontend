@@ -1,10 +1,10 @@
 <template>
-<div class="person">
+<div class="person" @click="callPerson(person.id)">
   <div class="person-image">
     <img src="" alt="">
   </div>
-  <span v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
-  <button class="btn-secondary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
+  <span class="person-status" v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
+  <span class="person-name" >{{person.first_name}} {{person.last_name}}</span>
 </div>
 </template>
 
