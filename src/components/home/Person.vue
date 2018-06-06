@@ -1,6 +1,7 @@
 <template>
 <div class="person">
   <span @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</span>
+  <span v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
 </div>
 </template>
 
@@ -11,7 +12,12 @@ import variables from '@/variables.js'
 
 export default {
   name: 'person',
-  props: ['person'],
+  props: ['person', 'isOnline'],
+  computed: {
+    getOnlineMembers () {
+      return this.$store.getters.getOnlineMembers
+    }
+  },
   methods: {
     callPerson (id) {
       let idLink = new Hashids().encode(id)
