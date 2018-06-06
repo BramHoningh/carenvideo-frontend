@@ -1,6 +1,8 @@
 <template>
   <div class="home">
+    <div class="contacts">
     <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
+    </div>
   </div>
 </template>
 
@@ -216,6 +218,8 @@ export default {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
+        console.log(currentUser.data)
+        console.log(people.data)
 
         this.$store.dispatch('addPeople', {
           currentUser: currentUser.data,

@@ -1,11 +1,11 @@
 <template>
-<div class="person">
-  <div class="person-image">
-    <img src="" alt="">
+  <div class="person" @click="callPerson(person.id)">
+    <div class="person-image">
+      <img src="../../assets/images/person-icon.svg" alt="">
+    </div>
+    <span class="person-status" v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
+    <span class="person-name" >{{person.first_name}} {{person.last_name}}</span>
   </div>
-  <span v-if="getOnlineMembers.indexOf(person.id.toString()) > -1">ONLINE</span>
-  <button class="btn-secondary" @click="callPerson(person.id)">{{person.first_name}} {{person.last_name}}</button>
-</div>
 </template>
 
 <script>
@@ -52,14 +52,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-span {
-  line-height: 1;
-  transition: all 230ms;
-  cursor: pointer;
 
-  &:hover {
-    font-weight: bold;
-  }
-}
 </style>
 
