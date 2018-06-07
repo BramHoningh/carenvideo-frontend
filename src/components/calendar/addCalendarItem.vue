@@ -42,6 +42,11 @@ export default {
   },
   methods: {
     sendCalendarItem () {
+      Date.prototype.addHours = function(h){
+          this.setHours(this.getHours()+h);
+          return this;
+      }
+
       axios({
         method: 'POST',
         url: variables.icalEndpoint,
@@ -50,8 +55,8 @@ export default {
           user_id: this.$store.getters.getCurrentUser.person_id,
           title: this.title,
           description: this.description,
-          startDate: new Date(this.startDate),
-          endDate: new Date(this.endDate),
+          startDate: new Date(this.startDate).addHours(2),
+          endDate: new Date(this.endDate).addHours(2),
           url: variables.baseUrl + '/room/' + new Hashids().encode(this.$store.getters.getCurrentUser.person_id)
         }
       })
@@ -62,34 +67,6 @@ export default {
         console.error(err)
       })
     },
-
-    getCurrentUserEndpoint () {
-      return axios.get(variables.userEndpoint, {
-        headers: { 'Authorization': 'Bearer ' + this.token }
-      })
-    },
-
-    getPeopleEndpoint () {
-      return axios.get(variables.peopleEndpoint, {
-        headers: { 'Authorization': 'Bearer ' + this.token }
-      })
-    },
-  },
-  created () {
-    if (this.token) {
-      axios.all([this.getCurrentUserEndpoint(), this.getPeopleEndpoint()])
-      .then(axios.spread((currentUser, people) => {
-
-        this.$store.dispatch('addPeople', {
-          currentUser: currentUser.data,
-          people: people.data
-        })
-      }))
-      .catch(err => {
-        console.log('err', err)
-        window.location = "https://www.carenzorgt.nl/login/oauth/authorize?response_type=token&client_id=" + variables.clientId + "&redirect_uri=" + variables.redirectUri + "&scope=user.read+calendar.read+care_givers.read"
-      })
-    }
   }
 }
 </script>
