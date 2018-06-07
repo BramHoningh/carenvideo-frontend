@@ -8,6 +8,7 @@ import Room from './views/Room.vue'
 
 import GetAccessToken from './components/oauth/GetAccessToken.vue'
 import SSO from './components/oauth/SSO.vue'
+import AddCalendarItem from './components/calendar/addCalendarItem.vue'
 
 Vue.use(Router)
 
@@ -41,5 +42,10 @@ export default new Router({
       name: 'sso',
       component: SSO
     },
+    {
+      path: '/calendar/add',
+      name: 'addCalendarItem',
+      component: AddCalendarItem
+    }
   ]
 })
