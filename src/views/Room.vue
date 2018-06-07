@@ -3,6 +3,23 @@
   <div class="video-container">
     <video class="streamVideo" ref="streamVideo" autoplay></video>
     <video class="ownVideo" ref="ownVideo" autoplay muted></video>
+    <div class="hangup-container">
+      <div class="icon"></div>
+      <button class="button">Ophangen</button>
+    </div>   
+  </div>
+  <div class="video-sidebar">
+    <div class="header">
+      <span>Mijn Notities</span>
+    </div>
+    <div class="oldnotes-container">
+      <div>
+
+      </div>
+      <div class="new-note-container">
+
+      </div>
+    </div>
   </div>
 </div>
 </template>
@@ -150,27 +167,89 @@ export default {
 
 <style lang="scss" scoped>
 .room {
-  max-width: 800px;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
-  padding: 20px;
 
   .video-container {
     position: relative;
+    z-index: 0;
 
     video.streamVideo {
       width: 100%;
+      height: 100%;
       background-color: pink;
     }
 
     video.ownVideo {
       position: absolute;
-      bottom: 15px;
-      right: 10px;
-      width: 200px;
-      box-shadow: 1px 1px 10px #000;
+      top: 15px;
+      left: 10px;
+      min-width: 300px;
+      max-width: 420px;
+      min-height: 169px;
+      border-radius: 4px;
+      background-color: #a6a6a6;
+      border: solid 4px #ffffff;
+    }
+
+    .hangup-container {
+      bottom: 35px;
+      position: absolute;
+      max-width: 315px;
+      width: 315px;
+      z-index: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+
+      .icon {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        right: 0;
+        transform: translateY(-50%);
+        top: 50%;
+        background-color: #cf145a;
+        border: solid 5px #ffffff;
+        border-radius: 100%;
+        z-index: 100;
+      }
+      .button {
+        max-width: 225px;
+        height: 60px;
+        box-sizing: border-box;
+        margin: 0;
+        min-width: auto;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        background-color: #ffffff;
+        font-family: Lato;
+        line-height: 18px;
+        font-size: 36px;
+        font-weight: 800;
+        color: #cf145a;
+      }
+    }
+  }
+  .video-sidebar {
+    display: none;
+    z-index: 100;
+    .header {
+      z-index: 100;
+      width: 100%;
+      height: 70px;
+      background-color: #ffffff;
+      border-bottom-left-radius: 15px;
+    }
+    .oldnotes-container {
+      background-color: #a6a6a6;
+      height: 50%;
+      width: 100%;
+      float: right;
     }
   }
 }
