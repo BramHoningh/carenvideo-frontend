@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="contacts">
-    <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
+      <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
     </div>
   </div>
 </template>
@@ -234,6 +234,10 @@ export default {
           console.log('BROWSER DOES NOT SUPPORT PUSH NOTIFICATIONS')
         }
       }))
+      .catch(err => {
+        console.log('err', err)
+        window.location = "https://www.carenzorgt.nl/login/oauth/authorize?response_type=token&client_id=" + variables.clientId + "&redirect_uri=" + variables.redirectUri + "&scope=user.read+calendar.read+care_givers.read"
+      })
     }
   }
 }

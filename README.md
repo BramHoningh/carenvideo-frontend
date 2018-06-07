@@ -14,6 +14,7 @@ Add a `variables.js` file in the `/src` folder with the following structure.
 
 ```javascript
 const variables = {
+  baseURL: // URL of the application, not the server
   applicationServerKey: // Vapid public key,
   clientId: // Caren Zorgt public key,
   userEndpoint: // Carenzorgt user endpoint ('https://www.carenzorgt.nl/api/v1/user') ,
@@ -23,7 +24,8 @@ const variables = {
   pushTriggerEndpoint: // Trigger Push Notification Endpoint (See carenvideo-server),
   pusherPublicKey: // Pusher Public Key (See https://pusher.com),
   pusherPresence: // Pusher Presence Channel Endpoint (See carenvideo-server),
-  pusherPrivate: // Pusher Private Channel Endpoint (See carenvideo-server)
+  pusherPrivate: // Pusher Private Channel Endpoint (See carenvideo-server),
+  icalEndpoint: // Ical endpoint on the server (See carenvideo-server)
 }
 
 export default variables
