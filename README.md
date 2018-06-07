@@ -14,6 +14,7 @@ Add a `variables.js` file in the `/src` folder with the following structure.
 
 ```javascript
 const variables = {
+  baseURL: // URL of the application, not the server
   applicationServerKey: // Vapid public key,
   clientId: // Caren Zorgt public key,
   userEndpoint: // Carenzorgt user endpoint ('https://www.carenzorgt.nl/api/v1/user') ,

@@ -18,6 +18,7 @@
 
 <script>
 import axios from 'axios'
+import Hashids from 'hashids'
 import variables from '../../variables.js'
 
 export default {
@@ -50,7 +51,8 @@ export default {
           title: this.title,
           description: this.description,
           startDate: new Date(this.startDate),
-          endDate: new Date(this.endDate)
+          endDate: new Date(this.endDate),
+          url: variables.baseUrl + '/room/' + new Hashids().encode(this.$store.getters.getCurrentUser.person_id)
         }
       })
       .then(response => {
