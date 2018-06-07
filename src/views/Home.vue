@@ -1,7 +1,13 @@
 <template>
   <div class="home">
     <div class="contacts">
-      <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
+      <div class="greeting">
+        <span class="greeting-top">Goedemorgen {{currentUser.first_name}},</span>
+        <span class="greeting-under">wie wil je vandaag bellen?</span>
+      </div>
+      <div class="persons-container">
+        <Person :person="person" v-if="usersPeople" v-for="person in usersPeople" :key="person.id"/>
+      </div>
     </div>
   </div>
 </template>
@@ -21,7 +27,7 @@ export default {
   data () {
     return {
       registredServiceWorker: null,
-      onlineUsers: []
+      onlineUsers: [],
     }
   },
   computed: {
@@ -32,6 +38,7 @@ export default {
     currentUser () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person
+        
       } else {
         return {
           first_name: '',
@@ -218,9 +225,6 @@ export default {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])
       .then(axios.spread((currentUser, people) => {
-        console.log(currentUser.data)
-        console.log(people.data)
-
         this.$store.dispatch('addPeople', {
           currentUser: currentUser.data,
           people: people.data
@@ -243,7 +247,35 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  @import '../assets/styles/all';
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+  .greeting {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: white;
+    font-size: 3.5em;
+    display: inline-grid;
+    margin-bottom: 50px;
+    .greeting-under {
+      width: 570px;
+      height: 60px;
+      font-family: 'Lato';
+      font-size: 35px;
+      font-weight: 400;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #ffffff;
+      text-align: -webkit-center;
+      display: -webkit-box;
+    }
+  }
+  .persons-container {
+    display: grid;
+    margin: 0 auto;
+    grid-row-gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+  }
 </style>
 
