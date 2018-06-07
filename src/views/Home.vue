@@ -262,16 +262,12 @@ export default {
       font-family: 'Lato';
       font-size: 35px;
       font-weight: 400;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
       color: #ffffff;
-      text-align: -webkit-center;
-      display: -webkit-box;
+      text-align: center;
     }
   }
   .persons-container {
+    text-align: center;
     display: grid;
     margin: 0 auto;
     grid-row-gap: 20px;
