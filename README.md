@@ -23,7 +23,8 @@ const variables = {
   pushTriggerEndpoint: // Trigger Push Notification Endpoint (See carenvideo-server),
   pusherPublicKey: // Pusher Public Key (See https://pusher.com),
   pusherPresence: // Pusher Presence Channel Endpoint (See carenvideo-server),
-  pusherPrivate: // Pusher Private Channel Endpoint (See carenvideo-server)
+  pusherPrivate: // Pusher Private Channel Endpoint (See carenvideo-server),
+  icalEndpoint: // Ical endpoint on the server (See carenvideo-server)
 }
 
 export default variables
