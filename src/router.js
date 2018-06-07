@@ -5,6 +5,7 @@ import variables from './variables'
 
 import Home from './views/Home.vue'
 import Room from './views/Room.vue'
+import Calendar from './views/Calendar.vue'
 
 import GetAccessToken from './components/oauth/GetAccessToken.vue'
 import SSO from './components/oauth/SSO.vue'
@@ -41,5 +42,10 @@ export default new Router({
       name: 'sso',
       component: SSO
     },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: Calendar
+    }
   ]
 })
