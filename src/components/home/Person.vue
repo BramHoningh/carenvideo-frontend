@@ -51,3 +51,10 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+  .is-online {
+      cursor: pointer;
+  }
+</style>
+
+
