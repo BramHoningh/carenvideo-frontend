@@ -51,6 +51,7 @@ export default {
           }
       })
       .then(response => {
+        console.log(response.data.data.items)
         this.calendarData = response.data.data.items
       })
       .catch(err => {

@@ -69,7 +69,6 @@ export default {
 
     getPeople () {
       if (this.$store.getters.getUsersPeople._embedded) {
-        console.log(this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id))
         return this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id)
       }
     }
