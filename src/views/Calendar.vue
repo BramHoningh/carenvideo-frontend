@@ -5,12 +5,19 @@
 </template>
 
 <script>
+import axios from 'axios'
+import variables from '../variables'
 import AddCalendar from '../components/calendar/AddCalendarItem'
 
 export default {
   name: 'calendar',
   components: {
     AddCalendar
+  },
+  computed: {
+    token () {
+      return this.$store.getters.getToken
+    },
   },
   methods: {
    getCurrentUserEndpoint () {
