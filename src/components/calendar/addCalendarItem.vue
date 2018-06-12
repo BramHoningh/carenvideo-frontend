@@ -11,6 +11,10 @@
 
   <label for="endDate">EndDate</label>
   <input type="datetime-local" id="endDate" v-model="endDate">
+
+  <div v-for="person in getPeople" :key="person.id">
+    <h4>{{person.first_name}}</h4>
+  </div>
   
   <button class="button-primary" @click="sendCalendarItem">Send</button>
 </div>
@@ -38,6 +42,13 @@ export default {
 
     getCurrentUser () {
       return this.$store.getters.getCurrentUser
+    },
+
+    getPeople () {
+      if (this.$store.getters.getUsersPeople._embedded) {
+        console.log(this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id))
+        return this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id)
+      }
     }
   },
   methods: {
