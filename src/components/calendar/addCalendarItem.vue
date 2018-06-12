@@ -5,17 +5,13 @@
   
   <label for="description">Description</label>
   <input type="text" id="description" v-model="description" placeholder="description">
-  
-  <label for="startDate">StartDate</label>
-  <input type="datetime-local" id="startDate" v-model="startDate">
-
-  <label for="endDate">EndDate</label>
-  <input type="datetime-local" id="endDate" v-model="endDate">
 
   <div v-for="person in getPeople" :key="person.id">
     <h4>{{person.first_name}}</h4>
   </div>
   
+  <date-picker v-model="datePickerValue" @change="datePickerChange" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>
+
   <button class="button-primary" @click="sendCalendarItem">Send</button>
 </div>
 </template>
@@ -23,21 +19,42 @@
 <script>
 import axios from 'axios'
 import Hashids from 'hashids'
+import moment from 'moment'
+import DatePicker from 'vue2-datepicker'
+
 import variables from '../../variables.js'
 
 export default {
   name: 'addCalendarItem',
+  components: {
+    DatePicker
+  },
   data () {
     return {
       title: '',
       description: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      datePicker: {
+        lang: {
+          days: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+          months: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+          pickers: ['volgende 7 dagen', 'volgende 30 dagen', 'vorige 7 dagen', 'vorige 30 dagen'],
+          placeholder: {
+            date: 'Selecteer Datum',
+            dateRange: 'Selecteer Periode'
+          }
+        },
+        options: {
+          start: "10:00"
+        }
+      },
+      datePickerValue: null
     }
   },
   computed: {
-    token () {
-      return this.$store.getters.getToken
+    convertDate () {
+      return moment(this.datePickerValue).format()
     },
 
     getCurrentUser () {
@@ -52,6 +69,11 @@ export default {
     }
   },
   methods: {
+    datePickerChange () {
+
+      console.log(this.convertDate)
+    }, 
+
     sendCalendarItem () {
       Date.prototype.addHours = function(h){
           this.setHours(this.getHours()+h);
@@ -66,8 +88,8 @@ export default {
           user_id: this.$store.getters.getCurrentUser.person_id,
           title: this.title,
           description: this.description,
-          startDate: new Date(this.startDate).addHours(2),
-          endDate: new Date(this.endDate).addHours(2),
+          startDate: this.convertDate,
+          endDate: moment(this.datePickerValue).add(1, 'hour').format(),
           url: variables.baseUrl + '/room/' + new Hashids().encode(this.$store.getters.getCurrentUser.person_id)
         }
       })
