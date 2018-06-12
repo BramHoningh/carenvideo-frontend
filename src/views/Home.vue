@@ -248,7 +248,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import '../assets/styles/all';
+
   .greeting {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
@@ -271,7 +272,10 @@ export default {
     display: grid;
     margin: 0 auto;
     grid-row-gap: 20px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    @include breakpoint(sm) {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 </style>
 
