@@ -6,11 +6,12 @@
   <label for="description">Description</label>
   <input type="text" id="description" v-model="description" placeholder="description">
 
-  <div v-for="person in getPeople" :key="person.id">
-    <h4>{{person.first_name}}</h4>
-  </div>
+  <select v-if="isGroupAdmin" v-model="personInput">
+    <option disabled value="">Voor wie wilt u de afspraak inplannen?</option>
+    <option v-for="person in getPeople" :key="person.id" :value="person.id">{{person.first_name}}</option>
+  </select>
   
-  <date-picker v-model="datePickerValue" @change="datePickerChange" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>
+  <date-picker v-model="datePickerValue" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>
 
   <button class="button-primary" @click="sendCalendarItem">Send</button>
 </div>
@@ -33,8 +34,7 @@ export default {
     return {
       title: '',
       description: '',
-      startDate: '',
-      endDate: '',
+      personInput: '',
       datePicker: {
         lang: {
           days: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
@@ -57,6 +57,12 @@ export default {
       return moment(this.datePickerValue).format()
     },
 
+    isGroupAdmin () {
+      if (this.$store.getters.getCurrentUser._embedded) {
+        return this.$store.getters.getCurrentUser._embedded.person.owner_id === null
+      }
+    },
+
     getCurrentUser () {
       return this.$store.getters.getCurrentUser
     },
@@ -69,28 +75,21 @@ export default {
     }
   },
   methods: {
-    datePickerChange () {
-
-      console.log(this.convertDate)
-    }, 
-
     sendCalendarItem () {
-      Date.prototype.addHours = function(h){
-          this.setHours(this.getHours()+h);
-          return this;
-      }
-
+      let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
+      
       axios({
         method: 'POST',
         url: variables.icalEndpoint,
         headers: {'Content-Type': 'application/json'},
         data: {
-          user_id: this.$store.getters.getCurrentUser.person_id,
+          user_id: userId,
           title: this.title,
           description: this.description,
           startDate: this.convertDate,
           endDate: moment(this.datePickerValue).add(1, 'hour').format(),
-          url: variables.baseUrl + '/room/' + new Hashids().encode(this.$store.getters.getCurrentUser.person_id)
+          url: variables.baseUrl + '/room/' + new Hashids().encode(this.$store.getters.getCurrentUser.person_id),
+          added_by: this.$store.getters.getCurrentUser.person_id
         }
       })
       .then(response => {
