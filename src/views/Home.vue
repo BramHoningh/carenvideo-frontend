@@ -58,13 +58,19 @@ export default {
   methods: {
     getCurrentUser () {
       return axios.get(variables.userEndpoint, {
-        headers: { 'Authorization': 'Bearer ' + this.token }
+        headers: { 
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        }
       })
     },
 
     getPeople () {
       return axios.get(variables.peopleEndpoint, {
-        headers: { 'Authorization': 'Bearer ' + this.token }
+        headers: { 
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        }
       })
     },
 

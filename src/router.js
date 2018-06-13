@@ -21,7 +21,7 @@ export default new Router({
       component: Home,
       beforeEnter: (to, from, next) => {
         if (!store.getters.getToken) {
-        //   window.location = "https://www.carenzorgt.nl/login/oauth/authorize?response_type=token&client_id=" + variables.clientId + "&redirect_uri=" + variables.redirectUri + "&scope=user.read+calendar.read+care_givers.read"
+          window.location = "https://www.carenzorgt.nl/login/oauth/authorize?response_type=token&client_id=" + variables.clientId + "&redirect_uri=" + variables.redirectUri + "&scope=user.read+calendar.read+care_givers.read"
         } else {
           next()
         }
