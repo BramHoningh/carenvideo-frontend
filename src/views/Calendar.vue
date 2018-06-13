@@ -1,9 +1,9 @@
 <template>
-<div class="calendar">
-  <AddCalendar />
-
-  <DisplayCalendarItems :calendarItems="calendarData" />
-</div>
+    <div class="calendar">
+        <AddCalendar />
+        <hr>
+        <DisplayCalendarItems :calendarItems="calendarData" />
+    </div>
 </template>
 
 <script>
@@ -81,6 +81,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    @import '../assets/styles/all';
+    .calendar {
+        padding-top: 15px;
+    }
 </style>
 

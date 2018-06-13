@@ -52,9 +52,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .is-online {
-      cursor: pointer;
-  }
+    @import '../../assets/styles/all';
+    .is-online {
+        cursor: pointer;
+    }
 </style>
 
 

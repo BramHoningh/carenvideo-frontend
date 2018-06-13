@@ -1,0 +1,25 @@
+input {
+    font-family: 'Lato';
+    font-size: 1em;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    color: $black;
+}
+label {
+    font-size: 1em;
+    font-family: 'Lato';
+    font-weight: 600;
+    color: $black;
+    margin: 0px 10px;
+    min-width: 200px;
+    display: inline-block;
+}
+select {
+    font-size: 1em;
+    font-family: 'Lato';
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    color: $black;
+}
