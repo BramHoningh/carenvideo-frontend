@@ -1,8 +1,8 @@
 <template>
 <div class="calendar">
-  <AddCalendar />
+  <AddCalendar @itemAdded="reload" />
 
-  <DisplayCalendarItems :calendarItems="calendarData" />
+  <DisplayCalendarItems :calendarItems="calendarData" @reloadItems="reload" />
 </div>
 </template>
 
@@ -55,6 +55,10 @@ export default {
       .catch(error => {
         console.log(error)
       })
+    },
+
+    reload () {
+      this.getCalendarItems(this.$store.getters.getCurrentUser.person_id)
     }
   },
   created () {
