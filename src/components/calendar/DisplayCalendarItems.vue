@@ -19,7 +19,7 @@
         <button class="btn-secondary" @click="deleteItem(calendarItem._id)">Verwijderen</button>
     </div>
 
-  <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" @updatedItem="reloadItems" />
+  <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" @updatedItem="reloadItems" @closeModal="closeEditModal" />
 </div>
 </template>
 
@@ -51,6 +51,12 @@ export default {
       this.showEdit = true
     },
 
+    closeEditModal () {
+      if (this.showEdit) {
+        this.showEdit = false
+      }
+    },
+
     deleteItem (id) {
       let confirm = window.confirm("Weet u zeker dat u deze afspraak wilt verwijderen?")
 
@@ -74,6 +80,7 @@ export default {
     },
 
     reloadItems () {
+      this.showEdit = false
       this.$emit('reloadItems')
     }
   },

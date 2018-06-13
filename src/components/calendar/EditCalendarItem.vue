@@ -1,5 +1,5 @@
 <template>
-<div v-show="show" class="modal">
+<div v-show="show" class="modal" @click="closeModal">
     <div class="modal-content">
         <div class="header">
             <span>Afspraak bewerken:</span>
@@ -77,6 +77,10 @@ export default {
     }
   },
   computed: {
+    convertDate () {
+      return moment(this.datePickerValue).format()
+    },
+
     isGroupAdmin () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person.owner_id === null
@@ -90,11 +94,13 @@ export default {
     }
   },
   methods: {
-    updateCalendarItem () {
-      console.log(this.calendarItem)
+    closeModal () {
+      this.$emit('closeModal')
+    },
 
+    updateCalendarItem () {
       let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
-      
+
       axios({
         method: 'POST',
         url: variables.updateCalendarItemEndpoint,
