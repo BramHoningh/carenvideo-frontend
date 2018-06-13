@@ -1,20 +1,29 @@
 <template>
-<div>
-  <label for="title">Title</label>
-  <input type="text" id="title" v-model="title">
-  
-  <label for="description">Description</label>
-  <input type="text" id="description" v-model="description" placeholder="description">
-
-  <select v-if="isGroupAdmin" v-model="personInput">
-    <option disabled value="">Voor wie wilt u de afspraak inplannen?</option>
-    <option v-for="person in getPeople" :key="person.id" :value="person.id">{{person.first_name}}</option>
-  </select>
-  
-  <date-picker v-model="datePickerValue" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>
-
-  <button class="button-primary" @click="sendCalendarItem">Send</button>
-</div>
+    <div class="calender-add">
+        <div class="header">
+            <span>Nieuwe afspraak:</span>
+        </div>
+        <div class="item">
+            <label for="title">Afspraak titel:</label>
+            <input type="text" id="title" v-model="title">
+        </div>
+        <div class="item">
+            <label for="description">Afspraak omschrijving:</label>
+            <input type="text" id="description" v-model="description">  
+        </div>
+        <div class="item">
+            <label for="personInput">Selecteer een gebruiker:</label>
+            <select v-if="isGroupAdmin" v-model="personInput">
+            <option disabled value="">Maak een keuze</option>
+            <option v-for="person in getPeople" :key="person.id" :value="person.id">{{person.first_name}}</option>
+            </select>
+        </div>
+        <div class="item">
+            <label for="personInput">Selecteer een tijd & datum:</label>
+            <date-picker v-model="datePickerValue" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>    
+        </div>
+        <button class="btn-primary" @click="sendCalendarItem">Afspraak opslaan</button>
+    </div>
 </template>
 
 <script>
@@ -41,7 +50,7 @@ export default {
           months: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
           pickers: ['volgende 7 dagen', 'volgende 30 dagen', 'vorige 7 dagen', 'vorige 30 dagen'],
           placeholder: {
-            date: 'Selecteer Datum',
+            date: 'Maak een keuze',
             dateRange: 'Selecteer Periode'
           }
         },
@@ -104,6 +113,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    @import '../../assets/styles/all';
+    button.btn-primary {
+        display: block;
+    }
+    .header {
+        box-shadow: 0 5px 10px 0 #bababa;
+        background-color: #e23670;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        color: white;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        font-size: 1.25em;
+        padding: 3px 15px;
+        margin-bottom: 15px;
+    }
+    .calender-add {
+        margin: 0 auto;
+        border-width: thin;
+        border-style: solid;
+        border-radius: 5px;
+        background-color: #eaeaea;
+        border: solid 4px #bababa;
+        max-width: 500px;
+    }
+    .item {
+        margin-bottom: 15px;
+        font-family: Lato;
+    }
 </style>
 

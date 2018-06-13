@@ -1,19 +1,30 @@
 <template>
 <div v-show="show" class="modal">
-  <label for="title">Title</label>
-  <input type="text" id="title" v-model="calendarItem.title">
-  
-  <label for="description">Description</label>
-  <input type="text" id="description" placeholder="description" v-model="calendarItem.description">
-
-  <select v-if="isGroupAdmin" v-model="personInput">
-    <option disabled value="">Voor wie wilt u de afspraak inplannen?</option>
-    <option v-for="person in getPeople" :key="person.id" :value="person.id">{{person.first_name}}</option>
-  </select>
-  
-  <date-picker v-model="datePickerValue" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>
-
-  <button class="button-primary" @click="updateCalendarItem">Send</button>
+    <div class="modal-content">
+        <div class="header">
+            <span>Afspraak bewerken:</span>
+        </div>
+        <div class="item">
+            <label for="title">Afspraak titel:</label>
+            <input type="text" id="title" v-model="calendarItem.title">
+        </div>
+        <div class="item">
+            <label for="description">Afspraak omschrijving:</label>
+            <input type="text" id="description" placeholder="description" v-model="calendarItem.description"> 
+        </div>
+        <div class="item">
+            <label for="personInput">Selecteer een gebruiker:</label>
+            <select v-if="isGroupAdmin" v-model="personInput">
+                <option disabled value="">Voor wie wilt u de afspraak inplannen?</option>
+                <option v-for="person in getPeople" :key="person.id" :value="person.id">{{person.first_name}}</option>
+            </select>
+        </div>
+        <div class="item">
+            <label for="personInput">Selecteer een tijd & datum:</label>
+            <date-picker v-model="datePickerValue" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>    
+        </div>
+        <button class="btn-primary" @click="updateCalendarItem">Wijzigingen opslaan</button>
+    </div>
 </div>
 </template>
 
@@ -114,15 +125,70 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-}
+    @import '../../assets/styles/all';
+    .modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        border-radius: 6px;
+        z-index: 1;
+        overflow: auto; 
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+        margin: 4% auto;
+        background-color: #eaeaea;
+        border: solid 4px #bababa;
+        width: 40%;
+        height: 40%;
+        font-family: 'Lato';
+        color: $white;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+        border: solid 1px;
+        border-radius: 6px;
+        box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+    .calendar-display {
+        max-width: 500px;
+        margin: 0 auto;
+        .title {
+            font-family: 'Lato';
+            font-size: 1.5em;
+            font-weight: 600;
+            color: white;
+        }
+    }
+    .header {
+        background-color: #e23670;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        color: white;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        font-size: 1.25em;
+        padding: 3px 15px;
+        margin-bottom: 15px;
+    }
+    .calendar-item {
+        max-width: 500px;
+        margin: 15px auto;
+        border-width: thin;
+        border-style: solid;
+        border-radius: 5px;
+        background-color: #eaeaea;
+        border: solid 4px #bababa;
+        max-width: 500px;
+    }
+    .item {
+        margin-bottom: 15px;
+        font-family: Lato;
+    }
 </style>
 

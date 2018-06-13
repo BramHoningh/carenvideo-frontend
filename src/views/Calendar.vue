@@ -1,7 +1,7 @@
 <template>
 <div class="calendar">
   <AddCalendar @itemAdded="reload" />
-
+  <hr>
   <DisplayCalendarItems :calendarItems="calendarData" @reloadItems="reload" />
 </div>
 </template>
@@ -83,6 +83,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    @import '../assets/styles/all';
+    .calendar {
+        padding-top: 15px;
+    }
 </style>
 
