@@ -1,9 +1,9 @@
 <template>
-    <div class="calendar">
-        <AddCalendar />
-        <hr>
-        <DisplayCalendarItems :calendarItems="calendarData" />
-    </div>
+<div class="calendar">
+  <AddCalendar @itemAdded="reload" />
+  <hr>
+  <DisplayCalendarItems :calendarItems="calendarData" @reloadItems="reload" />
+</div>
 </template>
 
 <script>
@@ -42,21 +42,23 @@ export default {
     },
 
     getCalendarItems (id) {
-      axios({
-        method: 'GET',
-          url: variables.getCalendarItemsEndpoint,
-          headers: {'Content-Type': 'application/json'},
-          params: {
-            user_id: id,
-          }
+      axios.get(variables.getCalenderItemsEndpoint, {
+        headers: { 'Content-Type': 'application/json' },
+        params: {
+          user_id: id
+        }
       })
       .then(response => {
-        console.log(response.data.data.items)
+        console.log(response)
         this.calendarData = response.data.data.items
       })
-      .catch(err => {
-        console.error('Error getting calendar items: ', err)
+      .catch(error => {
+        console.log(error)
       })
+    },
+
+    reload () {
+      this.getCalendarItems(this.$store.getters.getCurrentUser.person_id)
     }
   },
   created () {

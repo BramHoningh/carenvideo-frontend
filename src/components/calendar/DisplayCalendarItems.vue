@@ -19,7 +19,7 @@
         <button class="btn-secondary" @click="deleteItem(calendarItem._id)">Verwijderen</button>
     </div>
 
-  <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" />
+  <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" @updatedItem="reloadItems" />
 </div>
 </template>
 
@@ -65,11 +65,16 @@ export default {
         })
         .then(response => {
           console.log(response)
+          this.$emit('reloadItems')
         })
         .catch(err => {
           console.error(err)
         })
       }
+    },
+
+    reloadItems () {
+      this.$emit('reloadItems')
     }
   },
   created () {

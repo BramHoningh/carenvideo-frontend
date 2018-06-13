@@ -114,6 +114,7 @@ export default {
       })
       .then(response => {
         console.log(response)
+        this.$emit('updatedItem')
       })
       .catch(err => {
         console.error(err)

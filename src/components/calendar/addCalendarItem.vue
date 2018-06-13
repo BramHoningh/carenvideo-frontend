@@ -102,6 +102,7 @@ export default {
       })
       .then(response => {
         console.log(response)
+        this.$emit('itemAdded')
       })
       .catch(err => {
         console.error(err)
