@@ -28,6 +28,7 @@ const variables = {
   icalEndpoint: // Ical endpoint on the server (See carenvideo-server),
   getCalendarItemsEndpoint: // Endpoint to get calendar items for a user id (See carenvideo-server),
   updateCalendarItemEndpoint: // Update a calendar item for a user id (See carenvideo-server),
+  deleteCalendarItemEndpoint: // Delete a calendar item for a certain user (See carenvideo-server),
 }
 
 export default variables
