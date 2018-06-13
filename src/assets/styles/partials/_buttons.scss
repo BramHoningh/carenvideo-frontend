@@ -22,7 +22,8 @@ button {
   color: $white;
 
   &:hover {
-      box-shadow: inset 3px 3px 10px 0px #313131;
+    //   box-shadow: inset 3px 3px 10px 0px #313131;
+    background-color: $caren-purple-hover;
   }
 }
 

@@ -255,7 +255,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/all';
-
   .greeting {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
