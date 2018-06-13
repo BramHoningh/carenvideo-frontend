@@ -79,41 +79,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.calendar-display {
-    max-width: 500px;
-    margin: 0 auto;
-    .title {
-        font-family: 'Lato';
-        font-size: 1.5em;
-        font-weight: 600;
-        color: white;
+    @import '../../assets/styles/all';
+    .calendar-display {
+        max-width: 500px;
+        margin: 0 auto;
+        .title {
+            font-family: 'Lato';
+            font-size: 1.5em;
+            font-weight: 600;
+            color: white;
+        }
     }
-}
-.header {
-    box-shadow: 0 5px 10px 0 #bababa;
-    background-color: #e23670;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    color: white;
-    font-family: 'Open Sans';
-    font-weight: 600;
-    font-size: 1.25em;
-    padding: 3px 15px;
-    margin-bottom: 15px;
-}
-.calendar-item {
-    max-width: 500px;
-    margin: 15px auto;
-    border-width: thin;
-    border-style: solid;
-    border-radius: 5px;
-    background-color: #eaeaea;
-    border: solid 4px #bababa;
-    max-width: 500px;
-}
-.item {
-    margin-bottom: 15px;
-    font-family: Lato;
-}
+    .header {
+        box-shadow: 0 5px 10px 0 #bababa;
+        background-color: #e23670;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        color: white;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        font-size: 1.25em;
+        padding: 3px 15px;
+        margin-bottom: 15px;
+    }
+    .calendar-item {
+        max-width: 500px;
+        margin: 15px auto;
+        border-width: thin;
+        border-style: solid;
+        border-radius: 5px;
+        background-color: #eaeaea;
+        border: solid 4px #bababa;
+        max-width: 500px;
+    }
+    .item {
+        margin-bottom: 15px;
+        font-family: Lato;
+    }
 </style>
 

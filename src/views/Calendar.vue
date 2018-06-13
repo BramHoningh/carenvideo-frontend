@@ -81,8 +81,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.calendar {
-    padding-top: 15px;
-}
+    @import '../assets/styles/all';
+    .calendar {
+        padding-top: 15px;
+    }
 </style>
 

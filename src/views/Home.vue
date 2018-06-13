@@ -1,5 +1,24 @@
 <template>
   <div class="home">
+      <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="person-calling-image">
+                <img src="../assets/images/person-icon.svg" alt="">
+            </div>
+             <div class="message">
+                <span class="message-top">{{currentUser.first_name}},</span>
+                <span class="message-under">belt. Wil je..</span>
+                <div class="buttons">
+                    <div class="btn-accept">
+                        Opnemen
+                    </div>
+                    <div class="btn-ignore">
+                        Weigeren
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="contacts">
       <div class="greeting">
         <span class="greeting-top">Goedemorgen {{currentUser.first_name}},</span>
@@ -254,33 +273,112 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/styles/all';
-  .greeting {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    color: white;
-    font-size: 3.5em;
-    display: inline-grid;
-    margin-bottom: 50px;
-    .greeting-under {
-      width: 570px;
-      height: 60px;
-      font-family: 'Lato';
-      font-size: 35px;
-      font-weight: 400;
-      color: #ffffff;
-      text-align: center;
+    @import '../assets/styles/all';
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; 
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
     }
-  }
-  .persons-container {
-    text-align: center;
-    display: grid;
-    margin: 0 auto;
-    grid-row-gap: 20px;
-    grid-template-columns: repeat(2, 1fr);
-    @include breakpoint(sm) {
-      grid-template-columns: repeat(1, 1fr);
+    .buttons {
+        display: inline-flex;
     }
-  }
+    .modal-content {
+        background: $caren-gradient-right;
+        margin: 4% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        height: 80vh;
+        font-family: 'Lato';
+        color: $white;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+        .person-calling-image {
+            position: relative;
+            text-align: center;
+            box-shadow: inset 10px 10px 10px 0 rgba(0, 0, 0, 0.04);
+            border: solid 7px $white; 
+            min-height: 100px;
+            min-width: 100px;
+            background-color: $image-color;
+            border-radius: 50%;
+            display: inline-block;
+            height: 220px !important;
+            width: 220px !important;
+            margin: auto;
+            margin-right: 0;
+            img {
+                top: 50%;
+                left: 50%;
+                width: 90px;
+                height: 90px;
+                margin-top: 60px;
+            }
+        }
+    }
+    .message {
+        margin: auto;
+        margin-left: 20px;
+        span {
+            display: block;
+        }
+        .message-top {
+            font-family: 'Open Sans';
+            font-size: 3em;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #ffffff;
+        }
+        .message-under {
+            font-family: 'Open Sans';
+            font-size: 3em;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+    }
+    .greeting {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        color: white;
+        font-size: 3.5em;
+        display: inline-grid;
+        margin-bottom: 50px;
+        .greeting-under {
+            width: 570px;
+            height: 60px;
+            font-family: 'Lato';
+            font-size: 35px;
+            font-weight: 400;
+            color: #ffffff;
+            text-align: center;
+        }
+    }
+    .persons-container {
+        text-align: center;
+        display: grid;
+        margin: 0 auto;
+        grid-row-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        @include breakpoint(sm) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
 </style>
 
