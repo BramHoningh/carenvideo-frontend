@@ -43,7 +43,7 @@ export default new Router({
       component: SSO
     },
     {
-      path: '/calendar',
+      path: '/kalender',
       name: 'calendar',
       component: Calendar
     }

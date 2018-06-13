@@ -1,10 +1,10 @@
 <template>
-<div>
+<div v-show="show" class="modal">
   <label for="title">Title</label>
-  <input type="text" id="title" v-model="title">
+  <input type="text" id="title" v-model="calendarItem.title">
   
   <label for="description">Description</label>
-  <input type="text" id="description" v-model="description" placeholder="description">
+  <input type="text" id="description" placeholder="description" v-model="calendarItem.description">
 
   <select v-if="isGroupAdmin" v-model="personInput">
     <option disabled value="">Voor wie wilt u de afspraak inplannen?</option>
@@ -13,28 +13,39 @@
   
   <date-picker v-model="datePickerValue" type="datetime" format="dd-MM-yyyy HH:mm:ss" :minute-step="Number(10)" :lang="datePicker.lang"></date-picker>
 
-  <button class="button-primary" @click="sendCalendarItem">Send</button>
+  <button class="button-primary" @click="updateCalendarItem">Send</button>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Hashids from 'hashids'
 import moment from 'moment'
+import Hashids from 'hashids'
 import DatePicker from 'vue2-datepicker'
-
-import variables from '../../variables.js'
+import variables from '../../variables'
 
 export default {
-  name: 'addCalendarItem',
+  name: 'EditCalendarItem',
   components: {
     DatePicker
   },
+  props: {
+    show: {
+      type: Boolean,
+      default: false
+    },
+    calendarItem: {
+      type: Object,
+      default: () => {
+        return {
+          title: '',
+          description: ''
+        }
+      }
+    }
+  },
   data () {
     return {
-      title: '',
-      description: '',
-      personInput: '',
       datePicker: {
         lang: {
           days: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
@@ -49,22 +60,16 @@ export default {
           start: "10:00"
         }
       },
-      datePickerValue: null
+      datePickerValue: null,
+      personInput: '',
+      test: ''
     }
   },
   computed: {
-    convertDate () {
-      return moment(this.datePickerValue).format()
-    },
-
     isGroupAdmin () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person.owner_id === null
       }
-    },
-
-    getCurrentUser () {
-      return this.$store.getters.getCurrentUser
     },
 
     getPeople () {
@@ -74,21 +79,26 @@ export default {
     }
   },
   methods: {
-    sendCalendarItem () {
+    updateCalendarItem () {
+      console.log(this.calendarItem)
+
       let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
       
       axios({
         method: 'POST',
-        url: variables.icalEndpoint,
+        url: variables.updateCalendarItemEndpoint,
         headers: {'Content-Type': 'application/json'},
         data: {
-          user_id: userId,
-          title: this.title,
-          description: this.description,
-          startDate: this.convertDate,
-          endDate: moment(this.datePickerValue).add(1, 'hour').format(),
-          url: variables.baseUrl + '/room/' + new Hashids().encode(userId),
-          added_by: this.$store.getters.getCurrentUser.person_id
+          id: this.calendarItem._id,
+          item: {
+            user_id: userId,
+            title: this.calendarItem.title,
+            description: this.calendarItem.description,
+            startDate: this.convertDate,
+            endDate: moment(this.datePickerValue).add(1, 'hour').format(),
+            url: variables.baseUrl + '/room/' + new Hashids().encode(userId),
+            added_by: this.$store.getters.getCurrentUser.person_id
+          }
         }
       })
       .then(response => {
@@ -97,12 +107,21 @@ export default {
       .catch(err => {
         console.error(err)
       })
-    },
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+}
 </style>
 
