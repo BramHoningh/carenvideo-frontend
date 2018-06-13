@@ -175,13 +175,16 @@ export default {
   grid-template-rows: auto;
 
   .video-container {
-    position: relative;
     z-index: 0;
 
     video.streamVideo {
-      width: 100%;
       height: 100%;
+      width: 100%;
       background-color: pink;
+      z-index: 0;
+      margin: 0 auto;
+      display: block;
+      text-align: center;
     }
 
     video.ownVideo {
@@ -191,9 +194,10 @@ export default {
       min-width: 300px;
       max-width: 420px;
       min-height: 169px;
-      border-radius: 4px;
+      border-radius: 7px;
       background-color: #a6a6a6;
       border: solid 4px #ffffff;
+      z-index: 0;
     }
 
     .hangup-container {
@@ -201,7 +205,7 @@ export default {
       position: absolute;
       max-width: 315px;
       width: 315px;
-      z-index: 0;
+      z-index: 100;
       left: 50%;
       transform: translateX(-50%);
       cursor: pointer;
