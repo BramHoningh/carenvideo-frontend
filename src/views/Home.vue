@@ -6,8 +6,8 @@
                 <img src="../assets/images/person-icon.svg" alt="">
             </div>
              <div class="message">
-                <span class="message-top">{{currentUser.first_name}},</span>
-                <span class="message-under">belt. Wil je..</span>
+                <span class="message-top">{{currentUser.first_name}} {{currentUser.last_name}}</span>
+                <span class="message-under">belt. Wil je...</span>
                 <div class="buttons">
                     <div class="btn-accept">
                         Opnemen
@@ -288,6 +288,7 @@ export default {
     }
     .buttons {
         display: inline-flex;
+        width: 100%;
     }
     .modal-content {
         background: $caren-gradient-right;
@@ -302,6 +303,9 @@ export default {
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 10px;
         grid-auto-rows: minmax(100px, auto);
+        border: solid 1px;
+        border-radius: 6px;
+        box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.12);
         .person-calling-image {
             position: relative;
             text-align: center;
@@ -315,7 +319,7 @@ export default {
             height: 220px !important;
             width: 220px !important;
             margin: auto;
-            margin-right: 0;
+            margin-right: 20px;
             img {
                 top: 50%;
                 left: 50%;

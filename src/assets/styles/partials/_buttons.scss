@@ -39,16 +39,16 @@ button {
 .btn-ignore {
     @extend %btn;
     padding: 5px 10px;
-    min-width: 5em;
+    min-width: 7em;
     background-color: $caren-purple;
     border-color: $white;
-    border: solid 4px $white;
+    border: solid 3px $white;
 }
 .btn-accept {
     @extend %btn;
     padding: 5px 10px;
-    min-width: 5em;
+    min-width: 7em;
     background-color: $online-green;
     border-color: $white;
-    border: solid 4px $white;
+    border: solid 3px $white;
 }
