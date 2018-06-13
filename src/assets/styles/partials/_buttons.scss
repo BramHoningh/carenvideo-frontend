@@ -5,7 +5,7 @@
   font-family: 'Lato';
   font-size: 1.25rem;
   font-weight: 800;
-  border-radius: 12px;
+  border-radius: 6px;
   text-align: center;
   border: none;
   transition: all 230ms;
@@ -31,4 +31,8 @@ button {
   @extend %btn;
   background-color: $caren-darkblue;
   color: white;
+    &:hover {
+        //   box-shadow: inset 3px 3px 10px 0px #313131;
+        background-color: #002f40;
+    }
 }

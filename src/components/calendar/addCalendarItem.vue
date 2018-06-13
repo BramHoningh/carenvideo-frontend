@@ -1,5 +1,8 @@
 <template>
     <div class="calender-add">
+        <div class="header">
+            <span>Nieuwe afspraak:</span>
+        </div>
         <div class="item">
             <label for="title">Afspraak titel:</label>
             <input type="text" id="title" v-model="title">
@@ -112,17 +115,30 @@ export default {
 button.btn-primary {
     display: block;
 }
+.header {
+    box-shadow: 0 5px 10px 0 #bababa;
+    background-color: #e23670;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    color: white;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    font-size: 1.25em;
+    padding: 3px 15px;
+    margin-bottom: 15px;
+}
 .calender-add {
-    padding: 15px;
-    margin: 5px;
-    border: #565656;
+    margin: 0 auto;
     border-width: thin;
     border-style: solid;
     border-radius: 5px;
+    background-color: #eaeaea;
+    border: solid 4px #bababa;
     max-width: 500px;
 }
 .item {
     margin-bottom: 15px;
+    font-family: Lato;
 }
 </style>
 
