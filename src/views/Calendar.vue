@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AddCalendar from '../components/calendar/addCalendarItem'
+import AddCalendar from '../components/calendar/AddCalendarItem'
 
 export default {
   name: 'calendar',
