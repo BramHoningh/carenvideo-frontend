@@ -74,6 +74,7 @@ export default {
     },
 
     reloadItems () {
+      this.showEdit = false
       this.$emit('reloadItems')
     }
   },

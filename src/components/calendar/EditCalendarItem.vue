@@ -77,6 +77,10 @@ export default {
     }
   },
   computed: {
+    convertDate () {
+      return moment(this.datePickerValue).format()
+    },
+
     isGroupAdmin () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person.owner_id === null
@@ -91,10 +95,8 @@ export default {
   },
   methods: {
     updateCalendarItem () {
-      console.log(this.calendarItem)
-
       let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
-      
+
       axios({
         method: 'POST',
         url: variables.updateCalendarItemEndpoint,
