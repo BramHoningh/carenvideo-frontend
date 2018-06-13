@@ -19,7 +19,7 @@
         <button class="btn-secondary" @click="deleteItem(calendarItem._id)">Verwijderen</button>
     </div>
 
-  <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" @updatedItem="reloadItems" />
+  <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" @updatedItem="reloadItems" @closeModal="closeEditModal" />
 </div>
 </template>
 
@@ -49,6 +49,12 @@ export default {
     openEditModal (item) {
       this.editCalendarItem = item
       this.showEdit = true
+    },
+
+    closeEditModal () {
+      if (this.showEdit) {
+        this.showEdit = false
+      }
     },
 
     deleteItem (id) {

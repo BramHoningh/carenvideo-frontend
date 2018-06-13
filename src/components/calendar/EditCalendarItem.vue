@@ -1,5 +1,5 @@
 <template>
-<div v-show="show" class="modal">
+<div v-show="show" class="modal" @click="closeModal">
     <div class="modal-content">
         <div class="header">
             <span>Afspraak bewerken:</span>
@@ -94,6 +94,10 @@ export default {
     }
   },
   methods: {
+    closeModal () {
+      this.$emit('closeModal')
+    },
+
     updateCalendarItem () {
       let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
 
