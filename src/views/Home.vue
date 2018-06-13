@@ -58,13 +58,19 @@ export default {
   methods: {
     getCurrentUser () {
       return axios.get(variables.userEndpoint, {
-        headers: { 'Authorization': 'Bearer ' + this.token }
+        headers: { 
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        }
       })
     },
 
     getPeople () {
       return axios.get(variables.peopleEndpoint, {
-        headers: { 'Authorization': 'Bearer ' + this.token }
+        headers: { 
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        }
       })
     },
 
@@ -248,7 +254,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import '../assets/styles/all';
+
   .greeting {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
@@ -262,20 +269,19 @@ export default {
       font-family: 'Lato';
       font-size: 35px;
       font-weight: 400;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
       color: #ffffff;
-      text-align: -webkit-center;
-      display: -webkit-box;
+      text-align: center;
     }
   }
   .persons-container {
+    text-align: center;
     display: grid;
     margin: 0 auto;
     grid-row-gap: 20px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    @include breakpoint(sm) {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 </style>
 
