@@ -2,7 +2,7 @@
 <div class="calendar-display">
   <div class="calendar-item" v-for="(calendarItem, index) in calendarItems" :key="index">
     {{calendarItem.title}} | {{calendarItem.description}} | {{formatDate(calendarItem.startDate)}} |
-    <button class="button-primary" @click="openEditModal(calendarItem)">Wijzigen</button> | <button class="button-primary">Verwijderen</button>
+    <button class="button-primary" @click="openEditModal(calendarItem)">Wijzigen</button> | <button class="button-primary" @click="deleteItem(calendarItem._id)">Verwijderen</button>
   </div>
 
   <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" />
@@ -35,6 +35,27 @@ export default {
     openEditModal (item) {
       this.editCalendarItem = item
       this.showEdit = true
+    },
+
+    deleteItem (id) {
+      let confirm = window.confirm("Weet u zeker dat u deze afspraak wilt verwijderen?")
+
+      if (confirm) {
+        axios({
+          method: 'POST',
+          url: variables.deleteCalendarItemEndpoint,
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            id: id,
+          }
+        })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      }
     }
   },
   created () {
