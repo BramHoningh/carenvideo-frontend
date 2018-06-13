@@ -44,7 +44,7 @@ export default {
     getCalendarItems (id) {
       axios({
         method: 'GET',
-          url: variables.getCalenderItemsEndpoint,
+          url: variables.getCalendarItemsEndpoint,
           headers: {'Content-Type': 'application/json'},
           params: {
             user_id: id,
