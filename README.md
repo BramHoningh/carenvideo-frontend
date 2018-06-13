@@ -25,7 +25,9 @@ const variables = {
   pusherPublicKey: // Pusher Public Key (See https://pusher.com),
   pusherPresence: // Pusher Presence Channel Endpoint (See carenvideo-server),
   pusherPrivate: // Pusher Private Channel Endpoint (See carenvideo-server),
-  icalEndpoint: // Ical endpoint on the server (See carenvideo-server)
+  icalEndpoint: // Ical endpoint on the server (See carenvideo-server),
+  getCalendarItemsEndpoint: // Endpoint to get calendar items for a user id (See carenvideo-server),
+  updateCalendarItemEndpoint: // Update a calendar item for a user id (See carenvideo-server),
 }
 
 export default variables
