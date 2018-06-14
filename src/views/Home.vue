@@ -1,24 +1,27 @@
 <template>
   <div class="home">
-      <div id="modal" class="modal">
+      <div v-show="showCallModal" id="modal" class="modal">
         <div class="modal-content">
             <div class="person-calling-image">
                 <img src="../assets/images/person-icon.svg" alt="">
             </div>
              <div class="message">
-                <span class="message-top">{{currentUser.first_name}} {{currentUser.last_name}}</span>
+                <span class="message-top">{{modalPersonName}}</span>
                 <span class="message-under">belt. Wil je...</span>
                 <div class="buttons">
-                    <div class="btn-accept">
+                    <div class="btn-accept" @click="acceptCall">
                         Opnemen
                     </div>
-                    <div class="btn-ignore">
+                    <div class="btn-ignore" @click="declineCall">
                         Weigeren
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <button class="button-primary calendar-button" @click="$router.push('/kalender')">Kalender</button>
+
     <div class="contacts">
       <div class="greeting">
         <span class="greeting-top">Goedemorgen {{currentUser.first_name}},</span>
@@ -34,6 +37,7 @@
 <script>
 import axios from 'axios'
 import Pusher from 'pusher-js'
+import Hashids from 'hashids'
 import variables from '@/variables'
 
 import Person from '@/components/home/Person.vue'
@@ -47,11 +51,23 @@ export default {
     return {
       registredServiceWorker: null,
       onlineUsers: [],
+      showCallModal: false,
+      modalPersonName: '',
+      calledById: '',
+      roomLink: ''
     }
   },
   computed: {
     token () {
       return this.$store.getters.getToken
+    },
+
+    getCurrentUserId () {
+      return this.$store.getters.getCurrentUser.person_id
+    },
+
+    getAllUsersPusher () {
+      return this.$store.getters.getAllUsersChannel
     },
 
     currentUser () {
@@ -75,6 +91,17 @@ export default {
     }
   },
   methods: {
+    acceptCall () {
+      this.$router.push(this.roomLink)
+    },
+
+    declineCall () {
+      this.showCallModal = false
+      this.getAllUsersPusher.trigger('client-decline-call-event', {
+        id: this.calledById
+      })
+    },
+
     getCurrentUser () {
       return axios.get(variables.userEndpoint, {
         headers: { 
@@ -117,11 +144,36 @@ export default {
       })
 
       allUsersChannel.bind('pusher:subscription_succeeded', (members) => {
-       members.each(member => {
+        members.each(member => {
           this.$store.dispatch('addOnlineMember', {
             memberId: member.id
           })
         })
+      })
+
+      allUsersChannel.bind('client-call-event', (data) => {
+        if (data.id === this.getCurrentUserId) {
+          this.showCallModal = true
+          
+          let calledBy = this.usersPeople.find(person => person.id === data.called_by)
+          this.modalPersonName = calledBy.first_name + " " + calledBy.last_name
+
+          this.$store.dispatch('addCalledById', {
+            id: calledBy.id
+          })
+
+          this.calledById = calledBy.id
+
+          
+          let idLink = new Hashids().encode(id)
+          this.roomLink = `room/${idLink}`
+        }
+      })
+
+      allUsersChannel.bind('client-stop-call-event', (data) => {
+        if (data.id === this.getCurrentUserId) {  
+          this.showCallModal = false
+        }
       })
 
       allUsersChannel.bind('pusher:member_added', (member) => {
@@ -274,8 +326,16 @@ export default {
 
 <style lang="scss" scoped>
     @import '../assets/styles/all';
+
+    .home {
+      .calendar-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+
     .modal {
-        display: none;
         position: fixed;
         z-index: 1;
         left: 0;

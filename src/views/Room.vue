@@ -2,10 +2,11 @@
 <div class="room">
   <div class="video-container">
     <video class="streamVideo" ref="streamVideo" autoplay></video>
+    <div v-if="getPersonCallingId && showCallingText" class="calling-text">Je belt {{ personCalling }}...</div> 
     <video class="ownVideo" ref="ownVideo" autoplay muted></video>
     <div class="hangup-container">
       <div class="icon"></div>
-      <button class="button">Ophangen</button>
+      <button class="button" @click="hangup">Ophangen</button>
     </div>   
   </div>
   <div class="video-sidebar">
@@ -41,15 +42,51 @@ export default {
       p: null,
       count: 0,
       stream: null,
-      id: null
+      id: null,
+      personCalling: '',
+      showCallingText: true
     };
   },
   computed: {
     privateChannel () {
       return this.$store.getters.getPrivateChannel
-    }
+    },
+
+    getPusherChannel () {
+      return this.$store.getters.getAllUsersChannel
+    },
+
+    getCurrentUserId () {
+      return this.$store.getters.getCurrentUser.person_id
+    },
+
+    getOnlineMembers () {
+      return this.$store.getters.getOnlineMembers
+    },
+
+    getPersonCallingId () {
+      return this.$store.getters.getPersonCallingId
+    },
+
+    getCalledById () {
+      return this.$store.getters.getCalledById
+    },
+
+    getUsersPeople () {
+      return this.$store.getters.getUsersPeople._embedded.items
+    },
   },
   methods: {
+    hangup () {
+      let id = (this.getPersonCallingId) ? this.getPersonCallingId : this.getCalledById
+
+      this.getPusherChannel.trigger('client-stop-call-event', {
+        id: id
+      })
+
+      this.$router.push('/')
+    },
+
     initializePusher (stream) {
       if (!this.$store.getters.getPresencePusherInstance) {
         let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
@@ -113,6 +150,7 @@ export default {
       })
 
       peer.on('stream', (stream) => {
+        this.showCallingText = false
         let video = this.$refs.streamVideo;
         video.srcObject = stream;
         video.play();
@@ -139,8 +177,30 @@ export default {
         console.log("MEDIA ERROR", err);
       }
     );
+
+    this.getPusherChannel.bind('client-decline-call-event', (data) => {
+      if (data.id === this.getCurrentUserId) {  
+        this.$router.push('/')
+      }
+    })
+
+    this.getPusherChannel.bind('client-stop-call-event', (data) => {
+      if (data.id === this.getCurrentUserId) {  
+        this.$router.push('/')
+      }
+    })
+
+    if (this.getPersonCallingId) {
+      let person = this.getUsersPeople.find(person => person.id === this.getPersonCallingId)
+
+      this.personCalling = person.first_name + " " + person.last_name
+    }
   },
   created () {
+    // if (!this.getPusherChannel) {
+    //   this.$router.push('/')
+    // }
+
     if (this.$store.getters.getToken && !this.$store.getters.getCurrentUser.person_id) {
       axios.get('https://www.carenzorgt.nl/api/v1/user', {
         headers: { 'Authorization': 'Bearer ' + this.$store.getters.getToken }
@@ -157,15 +217,30 @@ export default {
       .catch(error => {
         console.error(error)
       })
-    } else {
-      console.log('NO TOKEN SET')
     }
-    
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/styles/all";
+
+.calling-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: 'Open Sans';
+  font-size: 3em;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
 .room {
   width: 100%;
   height: 100%;
@@ -180,7 +255,7 @@ export default {
     video.streamVideo {
       height: 100%;
       width: 100%;
-      background-color: pink;
+      background-color: $caren-gradient;
       z-index: 0;
       margin: 0 auto;
       display: block;

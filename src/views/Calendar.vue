@@ -1,5 +1,7 @@
 <template>
 <div class="calendar">
+  <button class="button-primary calendar-button" @click="$router.push('/')">Home</button>
+
   <AddCalendar @itemAdded="reload" />
   <hr>
   <DisplayCalendarItems :calendarItems="calendarData" @reloadItems="reload" />
@@ -86,6 +88,12 @@ export default {
     @import '../assets/styles/all';
     .calendar {
         padding-top: 15px;
+
+        .calendar-button {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+        }
     }
 </style>
 

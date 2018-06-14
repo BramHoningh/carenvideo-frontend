@@ -1,5 +1,5 @@
 <template>
-  <div class="person" @click="callPerson(person.id)">
+  <div class="person" :class="{'person-is-online': getOnlineMembers.indexOf(person.id.toString()) > -1}" @click="callPerson(person.id)">
     <div class="person-image">
       <img src="../../assets/images/person-icon.svg" alt="">
       <div class="person-status" :class="{'is-online': getOnlineMembers.indexOf(person.id.toString()) > -1}"></div>
@@ -19,12 +19,28 @@ export default {
   computed: {
     getOnlineMembers () {
       return this.$store.getters.getOnlineMembers
+    },
+    
+    getCurrentUserId () {
+      return this.$store.getters.getCurrentUser.person_id
+    },
+
+    getPusherChannel () {
+      return this.$store.getters.getAllUsersChannel
     }
   },
   methods: {
     callPerson (id) {
       let idLink = new Hashids().encode(id)
-      console.log(idLink)
+
+      this.getPusherChannel.trigger('client-call-event', {
+            id: id,
+            called_by: this.getCurrentUserId
+      })
+
+      this.$store.dispatch('addCallingPersonID', {
+        id: id
+      })
 
       axios({
         method: 'POST',
@@ -39,7 +55,6 @@ export default {
       })
       .then(response => {
         if (response.status === 200) {
-          // this.$router.push(`to-room/${idLink}`)
           this.$router.push(`room/${idLink}`)
         }
       })
@@ -52,10 +67,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import '../../assets/styles/all';
-    .is-online {
-        cursor: pointer;
-    }
+@import '../../assets/styles/all';
+.person {
+  pointer-events: none;
+}
+
+.person-is-online {
+    cursor: pointer !important;
+    pointer-events: all;
+}
 </style>
 
 
