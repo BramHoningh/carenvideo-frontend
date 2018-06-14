@@ -2,6 +2,7 @@
 <div class="room">
   <div class="video-container">
     <video class="streamVideo" ref="streamVideo" autoplay></video>
+    <div class="calling-text">Je belt Lex de Scrummaster...</div> 
     <video class="ownVideo" ref="ownVideo" autoplay muted></video>
     <div class="hangup-container">
       <div class="icon"></div>
@@ -47,7 +48,19 @@ export default {
   computed: {
     privateChannel () {
       return this.$store.getters.getPrivateChannel
-    }
+    },
+
+    getPusherChannel () {
+      return this.$store.getters.getAllUsersChannel
+    },
+
+    getCurrentUserId () {
+      return this.$store.getters.getCurrentUser.person_id
+    },
+
+    getOnlineMembers () {
+      return this.$store.getters.getOnlineMembers
+    },
   },
   methods: {
     initializePusher (stream) {
@@ -139,6 +152,12 @@ export default {
         console.log("MEDIA ERROR", err);
       }
     );
+
+    this.getPusherChannel.bind('client-decline-call-event', (data) => {
+      if (data.id === this.getCurrentUserId) {
+        this.$router.push('/')
+      }
+    })
   },
   created () {
     if (this.$store.getters.getToken && !this.$store.getters.getCurrentUser.person_id) {
@@ -166,6 +185,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/styles/all";
+
+.calling-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Open Sans';
+  font-size: 3em;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
 .room {
   width: 100%;
   height: 100%;
@@ -180,7 +216,7 @@ export default {
     video.streamVideo {
       height: 100%;
       width: 100%;
-      background-color: pink;
+      background-color: $caren-gradient;
       z-index: 0;
       margin: 0 auto;
       display: block;
