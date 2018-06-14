@@ -19,6 +19,9 @@
             </div>
         </div>
     </div>
+
+    <button class="button-primary calendar-button" @click="$router.push('/kalender')">Kalender</button>
+
     <div class="contacts">
       <div class="greeting">
         <span class="greeting-top">Goedemorgen {{currentUser.first_name}},</span>
@@ -323,6 +326,15 @@ export default {
 
 <style lang="scss" scoped>
     @import '../assets/styles/all';
+
+    .home {
+      .calendar-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+
     .modal {
         position: fixed;
         z-index: 1;
