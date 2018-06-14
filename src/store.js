@@ -12,7 +12,9 @@ export default new Vuex.Store({
     privatePusher: null,
     allUsersChannel: null,
     privateChannel: null,
-    onlineMembers: []
+    onlineMembers: [],
+    callingPersonId: null,
+    calledById: null
   },
   getters: {
     getToken: state => {
@@ -50,6 +52,14 @@ export default new Vuex.Store({
 
     getOnlineMembers: state => {
       return state.onlineMembers
+    },
+
+    getPersonCallingId: state => {
+      return state.callingPersonId
+    },
+
+    getCalledById: state => {
+      return state.calledById
     }
   },
   mutations: {
@@ -90,6 +100,14 @@ export default new Vuex.Store({
       if (index > -1) {
         state.onlineMembers.splice(index, 1)
       }
+    },
+
+    ADD_CALLING_PERSON_ID (state, payload) {
+      state.callingPersonId = payload.id
+    },
+
+    ADD_CALLED_BY_ID (state, payload) {
+      state.calledById = payload.id
     }
   },
   actions: {
@@ -136,6 +154,14 @@ export default new Vuex.Store({
 
     removeOnlineMember ({commit}, payload) {
       commit('REMOVE_ONLINE_MEMBER', payload)
+    },
+
+    addCallingPersonID ({commit}, payload) {
+      commit('ADD_CALLING_PERSON_ID', payload)
+    },
+
+    addCalledById ({commit}, payload) {
+      commit('ADD_CALLED_BY_ID', payload)
     }
   }
 })

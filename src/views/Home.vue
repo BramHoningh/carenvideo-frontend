@@ -154,10 +154,22 @@ export default {
           
           let calledBy = this.usersPeople.find(person => person.id === data.called_by)
           this.modalPersonName = calledBy.first_name + " " + calledBy.last_name
+
+          this.$store.dispatch('addCalledById', {
+            id: calledBy.id
+          })
+
           this.calledById = calledBy.id
+
           
           let idLink = new Hashids().encode(id)
           this.roomLink = `room/${idLink}`
+        }
+      })
+
+      allUsersChannel.bind('client-stop-call-event', (data) => {
+        if (data.id === this.getCurrentUserId) {  
+          this.showCallModal = false
         }
       })
 

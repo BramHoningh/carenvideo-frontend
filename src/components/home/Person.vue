@@ -38,6 +38,10 @@ export default {
             called_by: this.getCurrentUserId
       })
 
+      this.$store.dispatch('addCallingPersonID', {
+        id: id
+      })
+
       axios({
         method: 'POST',
         url: variables.pushTriggerEndpoint,
