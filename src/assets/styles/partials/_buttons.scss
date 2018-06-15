@@ -5,7 +5,7 @@
   font-family: 'Lato';
   font-size: 1.25rem;
   font-weight: 800;
-  border-radius: 12px;
+  border-radius: 6px;
   text-align: center;
   border: none;
   transition: all 230ms;
@@ -22,7 +22,8 @@ button {
   color: $white;
 
   &:hover {
-      box-shadow: inset 3px 3px 10px 0px #313131;
+    //   box-shadow: inset 3px 3px 10px 0px #313131;
+    background-color: $caren-purple-hover;
   }
 }
 
@@ -30,4 +31,24 @@ button {
   @extend %btn;
   background-color: $caren-darkblue;
   color: white;
+    &:hover {
+        //   box-shadow: inset 3px 3px 10px 0px #313131;
+        background-color: #002f40;
+    }
+}
+.btn-ignore {
+    @extend %btn;
+    padding: 5px 10px;
+    min-width: 7em;
+    background-color: $caren-purple;
+    border-color: $white;
+    border: solid 3px $white;
+}
+.btn-accept {
+    @extend %btn;
+    padding: 5px 10px;
+    min-width: 7em;
+    background-color: $online-green;
+    border-color: $white;
+    border: solid 3px $white;
 }
