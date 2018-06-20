@@ -42,21 +42,35 @@ export default {
     }
   },
   methods: {
+    /**
+     * Formats date to the right format
+     */
     formatDate (date) {
       return moment(date).format('DD MMMM YYYY, HH:mm')
     },
 
+    /**
+     * Shows the edit modal
+     * @param {Object} calendar item
+     */
     openEditModal (item) {
       this.editCalendarItem = item
       this.showEdit = true
     },
 
+    /**
+     * Closes edit modal
+     */
     closeEditModal () {
       if (this.showEdit) {
         this.showEdit = false
       }
     },
 
+    /**
+     * Deletes a calendar item and emits an event back to the parent container
+     * @param {String} id
+     */
     deleteItem (id) {
       let confirm = window.confirm("Weet u zeker dat u deze afspraak wilt verwijderen?")
 
@@ -79,11 +93,18 @@ export default {
       }
     },
 
+    /**
+     * Emits an event to the parent container that will handle the reload of items
+     */
     reloadItems () {
       this.showEdit = false
       this.$emit('reloadItems')
     }
   },
+
+  /**
+   * Sets the locale of the moment instance. 
+   */
   created () {
     moment.locale('nl-NL')
   }

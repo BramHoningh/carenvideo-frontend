@@ -58,18 +58,35 @@ export default {
     }
   },
   computed: {
+    /**
+     * Gets token from the store
+     * @returns {String} token
+     */
     token () {
       return this.$store.getters.getToken
     },
 
+    /**
+     * Gets user id from the store
+     * @returns {Number} person_id
+     */
     getCurrentUserId () {
       return this.$store.getters.getCurrentUser.person_id
     },
 
+    /**
+     * Gets allUser Pusher channel from the store
+     * @returns {Object} allUsersChannel
+     */
     getAllUsersPusher () {
       return this.$store.getters.getAllUsersChannel
     },
 
+    /**
+     * Gets current user object from the store if it exists
+     * else returns an empty first_name and last_name object
+     * @returns {Object} person
+     */
     currentUser () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person
@@ -82,6 +99,10 @@ export default {
       }
     },
 
+    /**
+     * Gets people array that belongs to the the current user
+     * @returns {Array} people
+     */
     usersPeople () {
       if (this.$store.getters.getUsersPeople._embedded) {
         return this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id)
@@ -91,10 +112,16 @@ export default {
     }
   },
   methods: {
+    /**
+     * Redirects the user to the calling room
+     */
     acceptCall () {
       this.$router.push(this.roomLink)
     },
 
+    /**
+     * Declines call and hides call modal
+     */
     declineCall () {
       this.showCallModal = false
       this.getAllUsersPusher.trigger('client-decline-call-event', {
@@ -102,6 +129,9 @@ export default {
       })
     },
 
+    /**
+     * @returns {axios} axios get request with the user endpoint and headers
+     */
     getCurrentUser () {
       return axios.get(variables.userEndpoint, {
         headers: { 
@@ -111,6 +141,9 @@ export default {
       })
     },
 
+    /**
+     * @returns {axios} axios get request with the people endpoint and headers
+     */
     getPeople () {
       return axios.get(variables.peopleEndpoint, {
         headers: { 
@@ -120,6 +153,11 @@ export default {
       })
     },
 
+    /**
+     * Initialize Pusher and add event listeners
+     * @param {Number} id
+     * @param {Number} channelNameId
+     */
     initializePusher (id, channelNameId) {
       let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
         cluster: 'eu',
@@ -189,6 +227,10 @@ export default {
       })
     },
 
+    /**
+     * Casts a url base64 to a UInt8 Array
+     * @returns {Array} outputArray
+     */
     urlBase64ToUint8Array(base64String) {
       const padding = '='.repeat((4 - base64String.length % 4) % 4);
       const base64 = (base64String + padding)
@@ -204,6 +246,11 @@ export default {
       return outputArray;
     },
 
+    /**
+     * Get notification permission state
+     * @returns {Object} notification permission state
+     * @returns {Object} permission
+     */
     getNotificationPermissionState () {
       if (navigator.permissions) {
         return navigator.permissions.query({name: 'notifications'})
@@ -217,6 +264,10 @@ export default {
       })
     },
 
+    /**
+     * Globally register a service worker from service-worker.js
+     * and asks for permission
+     */
     registerServiceWorker () {
       this.registredServiceWorker = navigator.serviceWorker.register('service-worker.js', { scope: '/' })
       return this.registredServiceWorker
@@ -229,6 +280,10 @@ export default {
       })
     },
 
+    /**
+     * Prompts the user for permission to show notifications
+     * @throws {Error} Permission was not granted
+     */
     askPermission () {
       return new Promise((resolve, reject) => {
         const permissionResult = Notification.requestPermission(result => {
@@ -246,6 +301,9 @@ export default {
       })
     },
 
+    /**
+     * Subscribes the user to push notifications
+     */
     subscribeUserToPush () {
       return this.registredServiceWorker
       .then(registration => {
@@ -264,6 +322,11 @@ export default {
       })
     },
 
+    /**
+     * Sends the subscription to the backend to save it to the database
+     * @returns {Object} server response
+     * @throws {Error} Bad status code from server
+     */
     sendSubscriptionToBackend(subsciption) {
       let bundledSub = JSON.parse(JSON.stringify(subsciption))
 
@@ -298,6 +361,10 @@ export default {
       })
     }
   },
+  /**
+   * If token is set, get data from Carenzorgt.nl, initialize Pusher and register service worker.
+   * If no token is set, redirect to Carenzorgt.nl to authenticate.
+   */
   created () {
     if (this.token) {
       axios.all([this.getCurrentUser(), this.getPeople()])

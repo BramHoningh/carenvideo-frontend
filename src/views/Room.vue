@@ -48,35 +48,66 @@ export default {
     };
   },
   computed: {
+    /**
+     * Gets Pusher private channel instance
+     * @returns {Object} privateCannel
+     */
     privateChannel () {
       return this.$store.getters.getPrivateChannel
     },
 
+    /**
+     * Gets Pusher allUsersChannel instance
+     * @returns {Object} allUsersChannel
+     */
     getPusherChannel () {
       return this.$store.getters.getAllUsersChannel
     },
 
+    /**
+     * Gets current user id
+     * @returns {Number} id
+     */
     getCurrentUserId () {
       return this.$store.getters.getCurrentUser.person_id
     },
 
+    /**
+     * Gets all online members
+     * @returns {Array} onlineMembers
+     */
     getOnlineMembers () {
       return this.$store.getters.getOnlineMembers
     },
 
+    /**
+     * Gets id of the person currently calling
+     * @returns {Number} id
+     */
     getPersonCallingId () {
       return this.$store.getters.getPersonCallingId
     },
 
+    /**
+     * Gets id of the person calling the client
+     * @returns {Number} id
+     */
     getCalledById () {
       return this.$store.getters.getCalledById
     },
 
+    /**
+     * Gets all users in a person his network
+     * @returns {Array} people
+     */
     getUsersPeople () {
       return this.$store.getters.getUsersPeople._embedded.items
     },
   },
   methods: {
+    /**
+     * Triggers a hangup Pusher-event and redirects the user to the homepage
+     */
     hangup () {
       let id = (this.getPersonCallingId) ? this.getPersonCallingId : this.getCalledById
 
@@ -87,6 +118,10 @@ export default {
       this.$router.push('/')
     },
 
+    /**
+     * Initialize Pusher with a video- and audiostream and add event listeners
+     * @param {Object} stream
+     */
     initializePusher (stream) {
       if (!this.$store.getters.getPresencePusherInstance) {
         let presencePusher = new Pusher('8dc95d49e9a8f15e0980', {
@@ -124,6 +159,12 @@ export default {
 
     },
 
+    /**
+     * Starts the stream by setting a peer-to-peer connection
+     * @param {Object} stream
+     * @param {Boolean} isInitiator
+     * @param {Object} channel
+     */
     startStream(stream, isInitiator, channel) {
       let video = this.$refs.ownVideo;
       video.srcObject = stream;
@@ -161,6 +202,10 @@ export default {
       })
     }
   },
+  /**
+   * Asks the user for permission to use their camera and microphone
+   * Also adds event listeners for hangup or call decline.
+   */
   mounted() {
     // get video/voice stream
     navigator.getUserMedia = ( navigator.getUserMedia ||
@@ -196,11 +241,12 @@ export default {
       this.personCalling = person.first_name + " " + person.last_name
     }
   },
-  created () {
-    // if (!this.getPusherChannel) {
-    //   this.$router.push('/')
-    // }
 
+  /**
+   * If a token is set and the currentUser is not set
+   * get the user from Carenzorgt.nl and add this to the store.
+   */
+  created () {
     if (this.$store.getters.getToken && !this.$store.getters.getCurrentUser.person_id) {
       axios.get('https://www.carenzorgt.nl/api/v1/user', {
         headers: { 'Authorization': 'Bearer ' + this.$store.getters.getToken }

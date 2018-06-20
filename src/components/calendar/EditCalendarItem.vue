@@ -77,16 +77,28 @@ export default {
     }
   },
   computed: {
+    /**
+     * Converts date to the right format
+     * @returns {Date} date
+     */
     convertDate () {
       return moment(this.datePickerValue).format()
     },
 
+    /**
+     * Checks if group owner
+     * @returns {Boolean}
+     */
     isGroupAdmin () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person.owner_id === null
       }
     },
 
+    /**
+     * Gets people from current user's network
+     * @returns {Array} people
+     */
     getPeople () {
       if (this.$store.getters.getUsersPeople._embedded) {
         return this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id)
@@ -94,10 +106,16 @@ export default {
     }
   },
   methods: {
+    /**
+     * Emits an event to the parent that will handle the closing of the modal
+     */
     closeModal () {
       this.$emit('closeModal')
     },
 
+    /**
+     * Sends an updated calendar item to the backend to be updated in the database
+     */
     updateCalendarItem () {
       let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
 
