@@ -17,19 +17,35 @@ export default {
   name: 'person',
   props: ['person', 'isOnline'],
   computed: {
+    /**
+     * Gets online members from the store
+     * @returns {Array} onlineMembers
+     */
     getOnlineMembers () {
       return this.$store.getters.getOnlineMembers
     },
     
+    /**
+     * Gets id of current user
+     * @returns {Number} id
+     */
     getCurrentUserId () {
       return this.$store.getters.getCurrentUser.person_id
     },
 
+    /**
+     * Gets allUsers Pusher channel instance
+     * @returns {Object} allUsersChannel
+     */
     getPusherChannel () {
       return this.$store.getters.getAllUsersChannel
     }
   },
   methods: {
+    /**
+     * Calls a person by id
+     * @param {Number} id
+     */
     callPerson (id) {
       let idLink = new Hashids().encode(id)
 

@@ -62,20 +62,36 @@ export default {
     }
   },
   computed: {
+    /**
+     * Converts date to the right format
+     * @returns {Date} date
+     */
     convertDate () {
       return moment(this.datePickerValue).format()
     },
 
+    /**
+     * Checks if the current user is an admin
+     * @returns {Boolean}
+     */
     isGroupAdmin () {
       if (this.$store.getters.getCurrentUser._embedded) {
         return this.$store.getters.getCurrentUser._embedded.person.owner_id === null
       }
     },
 
+    /**
+     * Gets current user from store
+     * @returns {Object} currentUser
+     */
     getCurrentUser () {
       return this.$store.getters.getCurrentUser
     },
 
+    /**
+     * Gets people from the current user's network
+     * @returns {Array} people
+     */
     getPeople () {
       if (this.$store.getters.getUsersPeople._embedded) {
         return this.$store.getters.getUsersPeople._embedded.items.filter(user => user.id !== this.$store.getters.getCurrentUser.person_id)
@@ -83,6 +99,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * Sends a calendar item to the backend to send it in the database
+     * and emits an event back to the parent component.
+     */
     sendCalendarItem () {
       let userId = (this.personInput === '') ? this.$store.getters.getCurrentUser.person_id : this.personInput
       
