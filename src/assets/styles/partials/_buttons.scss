@@ -36,6 +36,11 @@ button {
         background-color: #002f40;
     }
 }
+
+.btn-white {
+  @extend %btn;
+}
+
 .btn-ignore {
     @extend %btn;
     padding: 5px 10px;

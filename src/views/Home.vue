@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <button class="button-primary calendar-button" @click="$router.push('/kalender')">Kalender</button>
+    <button class="button-primary calendar-button" @click="$router.push('/kalender')">Naar kalender</button>
 
     <div class="contacts">
       <div class="greeting">
