@@ -235,7 +235,6 @@ h1.calendar-title {
   display: block;
   margin: 0 auto;
   border-radius: 5px;
-  box-shadow: 0 5px 10px 0 #bababa;
 }
 
 .header {

@@ -1,22 +1,25 @@
 <template>
 <div class="calendar-display">
-    <h1 class="title">Jou gemaakte afspraken</h1>
-    <div class="calendar-item" v-for="(calendarItem, index) in calendarItems" :key="index">
+    <h1 class="title">Door jouw gemaakte afspraken</h1>
+
+    <div class="calendar-items">
+      <div class="calendar-item" v-for="(calendarItem, index) in calendarItems" :key="index">
         <div class="header">
-            {{formatDate(calendarItem.startDate)}}
+            Deze afspraak is op {{formatDate(calendarItem.startDate)}}
         </div>
         <div class="">
             <div class="item">
-                <label for="title">Afspraak titel:</label>
+                <label for="title">Titel:</label>
                 <span>{{calendarItem.title}}</span>
             </div>
             <div class="item">
-                <label for="title">Afspraak omschrijving:</label>
+                <label for="title">Beschrijving:</label>
                 <span>{{calendarItem.description}}</span>
             </div>
         </div>  
-        <button class="btn-secondary" @click="openEditModal(calendarItem)">Wijzigen</button> 
+        <button class="btn-primary" @click="openEditModal(calendarItem)">Wijzigen</button> 
         <button class="btn-secondary" @click="deleteItem(calendarItem._id)">Verwijderen</button>
+      </div>
     </div>
 
   <EditCalendarItems :show="showEdit" :calendarItem="editCalendarItem" @updatedItem="reloadItems" @closeModal="closeEditModal" />
@@ -114,7 +117,7 @@ export default {
 <style lang="scss" scoped>
     @import '../../assets/styles/all';
     .calendar-display {
-        max-width: 500px;
+        max-width: 1000px;
         margin: 0 auto;
         .title {
             font-family: 'Lato';
@@ -141,14 +144,21 @@ export default {
         padding: 3px 15px;
         margin-bottom: 15px;
     }
+
+    .calendar-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+
     .calendar-item {
         max-width: 500px;
         margin: 15px auto;
         border-width: thin;
         border-style: solid;
         border-radius: 5px;
-        background-color: #eaeaea;
-        border: solid 4px #bababa;
+        background-color: white;
+        border: solid 4px white;
         max-width: 500px;
     }
     .item {
