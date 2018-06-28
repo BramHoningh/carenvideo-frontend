@@ -1,6 +1,6 @@
 <template>
 <div class="calendar-display">
-    <span class="title">Uw afspraken:</span>
+    <h1 class="title">Jou gemaakte afspraken</h1>
     <div class="calendar-item" v-for="(calendarItem, index) in calendarItems" :key="index">
         <div class="header">
             {{formatDate(calendarItem.startDate)}}
@@ -122,6 +122,12 @@ export default {
             font-weight: 600;
             color: white;
         }
+    }
+
+    h1.title {
+      text-align: center;
+      font-weight: bold;
+      color: white;
     }
     .header {
         box-shadow: 0 5px 10px 0 #bababa;

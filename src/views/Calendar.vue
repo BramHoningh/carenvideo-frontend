@@ -1,6 +1,6 @@
 <template>
 <div class="calendar">
-  <button class="button-primary calendar-button" @click="$router.push('/')">Home</button>
+  <button class="button-primary calendar-button" @click="$router.push('/')">Naar home</button>
 
   <AddCalendar @itemAdded="reload" />
   <hr>
